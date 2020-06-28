@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+<title>Add peripheral device</title>
+<!-- Custom CSS -->
+<link href="/dist/css/style.min.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<div th:insert="header.html :: header"> </div>
+		<!-- ============================================================== -->
+        <div th:insert="aside.html :: aside"> </div>
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb">
+				<div class="row align-items-center">
+					<div class="col-7">
+						<h4 class="page-title">Add peripheral device</h4>
+						<div class="d-flex align-items-center">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Add peripheral device</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="col-5">
+						<div class="text-right upgrade-btn">
+							<a href="/deviceConfiguration" class="btn btn-info text-white">Back</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+
+
+
+				<div class="container-fluid">
+					<div class="row">
+
+						<div class="col-12">
+							<div class="card">
+								<div class="table-responsive">
+									<table class="table">
+										<thead class="thead-light">
+											<tr>
+												<th scope="col">Device Id</th>
+												<th scope="col">Device Type</th>
+												<th scope="col">Device Name</th>
+												<th scope="col">Status</th>
+												<th scope="col">Last Updated On</th>
+												<th scope="col">Actions</th>
+
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="dc: ${emergencyButtons}">
+												<td th:text="${dc.deviceId}"></td>
+												<td th:text="${dc.deviceTypeName}"></td>
+												<td th:text="${dc.deviceName}"></td>
+												<td th:text="${dc.status}"></td>
+												<td th:text="${dc.lastModifiedDate}"></td>
+
+												<td>
+													<ul class="list-inline m-0">
+
+														<li class="list-inline-item"><a th:href="${'/editEmergencyButton/'+dc.id}">
+																<button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+																	<i class="fa fa-edit"></i>
+																</button>
+														</a></li>
+														<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.Id}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
+																	<i class="fa fa-trash"></i>
+																</button></a></li>
+													</ul>
+
+													<div class="col-12">
+
+														<!-- sample modal content -->
+														<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.Id }" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+															<div class="modal-dialog modal-sm">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h4 class="modal-title" id="mySmallModalLabel">Delete device configuration</h4>
+																		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																	</div>
+																	<div class="modal-body">
+																		Are you sure you want to delete the peripheral device : <span th:text=${dc.deviceName}></span> ?
+
+																	</div>
+																	<div class="modal-footer">
+																		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+																		<a th:href="${'/deleteEmergencyButton/'+dc.Id}"><button class="btn btn-danger">Yes</button></a>
+																	</div>
+																</div>
+																<!-- /.modal-content -->
+															</div>
+															<!-- /.modal-dialog -->
+														</div>
+
+													</div>
+
+												</td>
+											</tr>
+
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="container-fluid"></div>
+
+				<div class="row justify-content-center">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+
+								<form action="#" th:action="@{/addEmergencyButton}" th:object="${emergencyButton}" method="post">
+
+									<div class="container-fluid">
+
+										<div class="row">
+											<div class="col-4">
+												<div class="form-group">
+													<select class="form-control form-control-line" >
+														<option th:value="none">Select Device Type</option>
+														<option th:value="LED_dislination_board">LED dislination board</option>
+														<option th:value="LED_slave_display_board">LED slave display board</option>
+														<option th:value="LCD_slave_display_board">LCD slave display board</option>
+														<option th:value="PA_system">PA system</option>
+														<option th:value="Emergency_switch_button">Emergency switch button</option>
+
+													</select>
+
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+
+                                                    <input type="hidden"  class="form-control" th:field="*{Id}">
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Device Id:</label> <input type="text" readonly="readonly" class="form-control" th:field="*{deviceId}">
+												</div>
+
+											</div>
+											<div class="col-md-1"></div>
+											<div class="col-md-5">
+
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Device Name:</label> <input type="text" class="form-control" th:field="*{deviceName}">
+												</div>
+
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+
+												
+
+											</div>
+											<div class="col-md-1"></div>
+											<div class="col-md-5">
+											<div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile" name="myImage" th:field="*{audioFile}">
+    <label class="custom-file-label" for="customFile">Choose image file...</label>
+</div>
+
+
+											</div>
+										</div>
+										
+
+									</div>
+
+
+
+
+									<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
+									<button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
+
+								</form>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End PAge Content -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<!-- Right sidebar -->
+				<!-- ============================================================== -->
+				<!-- .right-sidebar -->
+				<!-- ============================================================== -->
+				<!-- End Right sidebar -->
+				<!-- ============================================================== -->
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Container fluid  -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<footer class="footer text-center"> Copyright Dan electronic system Pvt ltd, 2020 </footer>
+			<!-- ============================================================== -->
+			<!-- End footer -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Wrapper -->
+	<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/dist/js/app-style-switcher.js"></script>
+	<!--Wave Effects -->
+	<script src="/dist/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src="/dist/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src="/dist/js/custom.js"></script>
+</body>
+
+</html>

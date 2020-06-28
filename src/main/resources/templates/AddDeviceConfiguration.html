@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+<title>Add/Edit device configuration</title>
+<!-- Custom CSS -->
+<link href="/dist/css/style.min.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- Topbar header - style you can find in pages.scss -->
+		<!-- ============================================================== -->
+		<header class="topbar" data-navbarbg="skin5">
+			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
+				<div class="navbar-header" data-logobg="skin5">
+					<!-- ============================================================== -->
+					<!-- Logo -->
+					<!-- ============================================================== -->
+					<a class="navbar-brand" href="index.html"> <!-- Logo icon --> <b class="logo-icon"> <!--You can put here icon as well // <i class="wi wi-sunset"></i> //--> <!-- Dark Logo icon --> <img src="/assets/images/logo-icon.png" alt="homepage" class="dark-logo" /> <!-- Light Logo icon --> <img src="/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+					</b> <!--End Logo icon --> <!-- Logo text --> <span class="logo-text"> <!-- dark Logo text --> <img src="/assets/images/logo-text.png" alt="homepage" class="dark-logo" /> <!-- Light Logo text --> <img src="/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+					</span>
+					</a>
+					<!-- ============================================================== -->
+					<!-- End Logo -->
+					<!-- ============================================================== -->
+					<!-- This is for the sidebar toggle which is visible on mobile only -->
+					<a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End Logo -->
+				<!-- ============================================================== -->
+				<div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+					<!-- ============================================================== -->
+					<!-- toggle and nav items -->
+					<!-- ============================================================== -->
+					<ul class="navbar-nav float-left mr-auto">
+						<!-- ============================================================== -->
+						<!-- Search -->
+						<!-- ============================================================== -->
+						<li class="nav-item search-box"><a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
+							<form class="app-search position-absolute">
+								<input type="text" class="form-control" placeholder="Search &amp; enter"> <a class="srh-btn"><i class="ti-close"></i></a>
+							</form></li>
+					</ul>
+					<!-- ============================================================== -->
+					<!-- Right side toggle and nav items -->
+					<!-- ============================================================== -->
+					<ul class="navbar-nav float-right">
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+							<div class="dropdown-menu dropdown-menu-right user-dd animated">
+								<a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a> <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a> <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+							</div></li>
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!-- ============================================================== -->
+		<!-- End Topbar header -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- Left Sidebar - style you can find in sidebar.scss  -->
+		<!-- ============================================================== -->
+		<aside class="left-sidebar" data-sidebarbg="skin6">
+			<!-- Sidebar scroll-->
+			<div class="scroll-sidebar">
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav">
+					<ul id="sidebarnav">
+						<!-- User Profile-->
+						<li>
+							<!-- User Profile-->
+							<div class="user-profile d-flex no-block dropdown m-t-20">
+								<div class="user-pic">
+									<img src="/assets/images/users/1.jpg" alt="users" class="rounded-circle" width="40" />
+								</div>
+								<div class="user-content hide-menu m-l-10">
+									<a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<h5 class="m-b-0 user-name font-medium">
+											Steave Jobs <i class="fa fa-angle-down"></i>
+										</h5> <span class="op-5 user-email">varun@gmail.com</span>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="Userdd">
+										<a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a> <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a> <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+									</div>
+								</div>
+							</div> <!-- End User Profile-->
+						</li>
+						<!-- User Profile-->
+						<li class="sidebar-item"><a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Home</span></a></li>
+						<li class="sidebar-item"><a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-network"></i><span class="hide-menu">Device Configuration</span></a>
+
+							<ul aria-expanded="false" class="collapse  first-level">
+								<li class="sidebar-item"><a href="/deviceConfiguration" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Device Configuration </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Intensity Settings </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Slogans </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> KM Running age </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Audio Settings </span></a></li>
+
+
+							</ul></li>
+						<li class="sidebar-item"><a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-network"></i><span class="hide-menu">Train Route</span></a>
+
+							<ul aria-expanded="false" class="collapse  first-level">
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Add Train </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Add Stations </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Train Route </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Rake Composition </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Languages </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Admin Panel </span></a></li>
+
+							</ul></li>
+						<li class="sidebar-item"><a class="sidebar-link waves-effect waves-dark sidebar-link" href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">On Board Diagnostic</span></a></li>
+						<li class="sidebar-item"><a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-network"></i><span class="hide-menu">Logs</span></a>
+
+							<ul aria-expanded="false" class="collapse  first-level">
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Emergency Messages </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Alerts </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Message/Command </span></a></li>
+								<li class="sidebar-item"><a href="index.html" class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> Logs </span></a></li>
+
+							</ul></li>
+						<li class="sidebar-item"><a class="sidebar-link waves-effect waves-dark sidebar-link" href="error-404.html" aria-expanded="false"><i class="mdi mdi-alert-outline"></i><span class="hide-menu">Backup/Sync</span></a></li>
+
+					</ul>
+
+				</nav>
+				<!-- End Sidebar navigation -->
+			</div>
+			<!-- End Sidebar scroll-->
+		</aside>
+		<!-- ============================================================== -->
+		<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb">
+				<div class="row align-items-center">
+					<div class="col-5">
+						<h4 class="page-title">Add/Edit device configuration</h4>
+						<div class="d-flex align-items-center">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Add/Edit device configuration</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<div class="col-7">
+						<div class="text-right upgrade-btn">
+							<a href="/deviceConfiguration" class="btn btn-info text-white">Back</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<div class="row justify-content-center">
+					<div class="col-12">
+
+						<form action="#" th:action="@{/addDeviceConfiguration}" th:object="${deviceConfiguration}" method="post">
+
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Device Id:</label> <input type="text" class="form-control" th:field="*{deviceId}">
+										</div>
+
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Device Name:</label> <input type="text" class="form-control" th:field="*{deviceName}">
+										</div>
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Zonal Railway:</label> <input type="text" class="form-control" th:field="*{zonalRailway}">
+										</div>
+
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Train No:</label> <input type="text" class="form-control" th:field="*{trainNo}">
+										</div>
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Coach No:</label> <input type="text" class="form-control" th:field="*{coachNo}">
+										</div>
+
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Coach Name:</label> <input type="text" class="form-control" th:field="*{coachName}">
+										</div>
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">KM Run:</label> <input type="text" class="form-control" th:field="*{kmRun}">
+										</div>
+
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Status:</label> <input type="text" class="form-control" th:field="*{status}">
+										</div>
+
+									</div>
+								</div>
+
+
+							</div>
+
+
+
+
+							<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
+
+						</form>
+
+					</div>
+					<div class="container-fluid">
+					</div>
+					<div class="container-fluid">
+					<div class="row">
+
+						<div class="col-12">
+							<div class="card">
+								<div class="table-responsive">
+									<table class="table">
+										<thead class="thead-light">
+											<tr>
+												<th scope="col">Device Id</th>
+												<th scope="col">Device Name</th>
+												<th scope="col">Zonal Railway</th>
+												<th scope="col">Train No</th>
+												<th scope="col">Km Run</th>
+												<th scope="col">Coach No</th>
+												<th scope="col">Coach Name</th>
+												<th scope="col">Status</th>
+												<th scope="col">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="dc: ${deviceConfigurations}">
+												<td th:text="${dc.deviceId}"></td>
+												<td th:text="${dc.deviceName}"></td>
+												<td th:text="${dc.zonalRailway}"></td>
+												<td th:text="${dc.trainNo}"></td>
+												<td th:text="${dc.kmRun}"></td>
+												<td th:text="${dc.coachNo}"></td>
+												<td th:text="${dc.coachName}"></td>
+												<td th:text="${dc.status}"></td>
+												<td>
+													<ul class="list-inline m-0">
+
+														<li class="list-inline-item"><a th:attr="onclick=|viewUser('${dc.deviceId}')|">
+																<button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+																	<i class="fa fa-edit"></i>
+																</button>
+														</a></li>
+														<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.deviceId}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
+																	<i class="fa fa-trash"></i>
+																</button></a></li>
+													</ul>
+
+													<div class="col-12">
+
+														<!-- sample modal content -->
+														<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.deviceId }" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+															<div class="modal-dialog modal-sm">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h4 class="modal-title" id="mySmallModalLabel">Delete device configuration</h4>
+																		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																	</div>
+																	<div class="modal-body">
+																		Are you sure you want to delete the device configuration: <span th:text=${dc.deviceName}></span> ?
+
+																	</div>
+																	<div class="modal-footer">
+																		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+																		<a th:href="${'/deleteDeviceConfiguration/'+dc.deviceId}"><button class="btn btn-danger">Yes</button></a>
+																	</div>
+																</div>
+																<!-- /.modal-content -->
+															</div>
+															<!-- /.modal-dialog -->
+														</div>
+
+													</div>
+
+												</td>
+											</tr>
+
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					</div>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End PAge Content -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<!-- Right sidebar -->
+				<!-- ============================================================== -->
+				<!-- .right-sidebar -->
+				<!-- ============================================================== -->
+				<!-- End Right sidebar -->
+				<!-- ============================================================== -->
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Container fluid  -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<footer class="footer text-center"> Copyright Dan electronic system Pvt ltd, 2020 </footer>
+			<!-- ============================================================== -->
+			<!-- End footer -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Wrapper -->
+	<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/dist/js/app-style-switcher.js"></script>
+	<!--Wave Effects -->
+	<script src="/dist/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src="/dist/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src="/dist/js/custom.js"></script>
+</body>
+
+</html>

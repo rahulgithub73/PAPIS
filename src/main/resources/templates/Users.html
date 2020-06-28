@@ -1,0 +1,308 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html dir="ltr" lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+<title>User</title>
+<!-- Custom CSS -->
+<link href="/dist/css/style.min.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+	function viewUser(id) {
+		$.ajax({
+			url : "/editUser/" + id,
+			success : function(response) {
+				$("#modalHolder").html(response);
+				$("#responsive-modal").modal("show");
+
+			}
+		});
+	}
+	function Validate() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        if (password != confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+        return true;
+    }
+</script>
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<div th:insert="header.html :: header"> </div>
+		<!-- ============================================================== -->
+        <div th:insert="aside.html :: aside"> </div>
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb">
+				<div class="row align-items-center">
+					<div class="col-5">
+						<h4 class="page-title">User</h4>
+						<div class="d-flex align-items-center">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">User</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<div class="col-7">
+						<div class="text-right upgrade-btn">
+							<a data-toggle="modal" data-target="#responsive-modal" class="btn waves-effect waves-light btn-rounded btn-success text-white"><i class="fa fa-plus"></i>Add User</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<div class="row">
+
+					<div class="col-12">
+						<div class="card">
+							<div class="table-responsive">
+								<table class="table">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">User Name</th>
+											<th scope="col">Password</th>
+											<th scope="col">Role</th>
+											<th scope="col">Last login time</th>
+											<th scope="col">Actions</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr th:each="dc: ${users}">
+											<td th:text="${dc.userName}"></td>
+											<td th:text="${dc.password}"></td>
+											<td th:text="${dc.role}"></td>
+											<td th:text="${dc.lastModifiedDate}"></td>
+
+											<td>
+												<ul class="list-inline m-0">
+
+
+													<li class="list-inline-item"><a th:attr="onclick=|viewUser('${dc.id}')|">
+															<button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+																<i class="fa fa-edit"></i>
+															</button>
+													</a></li>
+													<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.id}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
+																<i class="fa fa-trash"></i>
+															</button></a></li>
+												</ul>
+
+												<div class="col-12">
+
+													<!-- sample modal content -->
+													<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.id }" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+														<div class="modal-dialog modal-sm">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h4 class="modal-title" id="mySmallModalLabel">Delete User</h4>
+																	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																</div>
+																<div class="modal-body">
+																	Are you sure you want to delete the user: <span th:text=${dc.userName}></span> ?
+
+																</div>
+																<div class="modal-footer">
+																	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+																	<a th:href="${'/deleteUser/'+dc.id}"><button class="btn btn-danger">Yes</button></a>
+																</div>
+															</div>
+															<!-- /.modal-content -->
+														</div>
+														<!-- /.modal-dialog -->
+													</div>
+
+												</div>
+
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+								<div class="col-12" style="text-align: center;">
+									<span th:if="${#lists.isEmpty(users)}">Record not found</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="modalHolder"></div>
+
+					<div class="col-12">
+						<!-- sample modal content -->
+						<div id="responsive-modal" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" th:fragment="responsiveDeviceModal">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<form action="#" th:action="@{/user}" th:object="${login}" method="post">
+
+										<div class="modal-header">
+											<h4 class="modal-title">Add/Edit User</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+										</div>
+										<div class="modal-body">
+
+											<div class="container-fluid">
+												<div class="row">
+													<input type="hidden" class="form-control" th:field="*{Id}">
+													<div class="col-md-5">
+
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">User Name:</label> 
+															<input type="text" class="form-control" th:field="*{userName}" required>
+														</div>
+
+													</div>
+													<div class="col-md-1"></div>
+													<div class="col-md-5">
+
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">Role:</label> <select class="form-control form-control-line" th:field="*{role}">
+																<option th:value="admin">admin</option>
+																<option th:value="operator">operator</option>
+
+
+															</select>
+
+														</div>
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">Password:</label> <input type="password" class="form-control" th:field="*{password}" required>
+														</div>
+
+													</div>
+													<div class="col-md-1"></div>
+													<div class="col-md-5">
+
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">Confirm Password:</label> <input type="password" class="form-control" th:field="*{confirmPassword}" required>
+														</div>
+
+													</div>
+												</div>
+
+
+
+											</div>
+
+
+										</div>
+										<div class="modal-footer">
+
+											<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
+											<button type="submit" class="btn waves-effect waves-light btn-success" onclick="return Validate()">Save</button>
+										</div>
+
+									</form>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-12" style="text-align: center;">
+							<p style="color: red"  th:if ="userAlreadyExits != null" th:text="${userAlreadyExits}" ></p>
+						</div>
+					</div>
+
+				</div>
+				<!-- ============================================================== -->
+				<!-- End PAge Content -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<!-- Right sidebar -->
+				<!-- ============================================================== -->
+				<!-- .right-sidebar -->
+				<!-- ============================================================== -->
+				<!-- End Right sidebar -->
+				<!-- ============================================================== -->
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Container fluid  -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<footer class="footer text-center"> Copyright Dan electronic system Pvt ltd, 2020 </footer>
+			<!-- ============================================================== -->
+			<!-- End footer -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Wrapper -->
+	<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/dist/js/app-style-switcher.js"></script>
+	<!--Wave Effects -->
+	<script src="/dist/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src="/dist/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src="/dist/js/custom.js"></script>
+</body>
+
+</html>
