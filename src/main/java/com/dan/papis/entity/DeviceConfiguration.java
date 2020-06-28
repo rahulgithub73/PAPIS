@@ -36,6 +36,9 @@ public class DeviceConfiguration extends BaseEntity {
 	@Column(name = "status")
 	private String status;
 	
+	@Column(name = "device_type")
+	private String deviceType;
+	
 	@Transient
 	private String zonalRailwayDisplay;
 

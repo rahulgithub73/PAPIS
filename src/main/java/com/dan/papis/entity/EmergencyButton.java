@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class EmergencyButton extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long Id;
+	private Long id;
 
 	@Column(name = "device_id")
 	private String deviceId;
@@ -33,5 +34,8 @@ public class EmergencyButton extends BaseEntity {
 	
 	@Column(name = "status")
 	private String status;
+	
+	@Transient
+	private String periDeviceType;
 
 }

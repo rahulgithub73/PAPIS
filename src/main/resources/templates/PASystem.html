@@ -89,10 +89,11 @@
 									<table class="table">
 										<thead class="thead-light">
 											<tr>
-												<th scope="col">Device Id</th>
+												<th scope="col"><span th:text="${deviceType}"></span> Device Id</th>
 												<th scope="col">Device Type</th>
 												<th scope="col">Device Name</th>
 												<th scope="col">Volume</th>
+												<th scope="col">Status</th>
 												<th scope="col">Last Updated On</th>
 												<th scope="col">Actions</th>
 
@@ -105,7 +106,9 @@
 												<td th:text="${dc.deviceTypeName}"></td>
 												<td th:text="${dc.deviceName}"></td>
 												<td th:text="${dc.volume}"></td>
-												<td th:text="${dc.lastModifiedDate}"></td>
+												<td th:if="${dc.status} == 'Working'" th:text="${dc.status}" style="color:green;"></td>
+											    <td th:if="${dc.status} == 'Not Working'" th:text="${dc.status}" style="color:red;"></td>
+												<td th:text="${dc.lastModified}"></td>
 
 												<td>
 													<ul class="list-inline m-0">
@@ -152,6 +155,10 @@
 
 										</tbody>
 									</table>
+									<div class="col-12" style="text-align: center;">
+									<span th:if="${#lists.isEmpty(paSystems)}">Record
+										not found</span>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -170,41 +177,36 @@
 									<div class="container-fluid">
 
 										<div class="row">
-											<div class="col-4">
-												<div class="form-group">
-													<select class="form-control form-control-line" >
-														<option th:value="none">Select Device Type</option>
-														<option th:value="LED_dislination_board">LED dislination board</option>
-														<option th:value="LED_slave_display_board">LED slave display board</option>
-														<option th:value="LCD_slave_display_board">LCD slave display board</option>
-														<option th:value="PA_system">PA system</option>
-														<option th:value="Emergency_switch_button">Emergency switch button</option>
+											<div class="col-6">
+												<div class="form-group" >
+															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label> <select class="form-control form-control-line" th:field="*{deviceId}" required>
+																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+															</select>
 
-													</select>
-
-												</div>
+														</div>
 											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-5">
+											<div class="col-md-6">
 
                                                     <input type="hidden"  class="form-control" th:field="*{Id}">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Device Id:</label> <input type="text" readonly="readonly" class="form-control" th:field="*{deviceId}">
-												</div>
-
-											</div>
-											<div class="col-md-1"></div>
-											<div class="col-md-5">
-
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Device Name:</label> <input type="text" class="form-control" th:field="*{deviceName}">
+													<label for="recipient-name" class="control-label">Device type:</label> <input type="text" readonly="readonly" class="form-control" th:field="*{periDeviceType}">
 												</div>
 
 											</div>
 										</div>
+										
 										<div class="row">
-											<div class="col-md-5">
+											
+											
+											<div class="col-md-6">
+
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Device Name:</label> <input type="text" class="form-control" th:field="*{deviceName}" required>
+												</div>
+
+											</div>
+										
+											<div class="col-md-6">
                                                   <div class="form-group">
 													<label for="recipient-name" class="control-label">Volume:</label> <select class="form-control form-control-line" th:field="*{volume}">
 														<option th:value="10">10</option>
@@ -239,7 +241,7 @@
 
 
 
-									<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
+									<button type="button" class="btn waves-effect waves-light btn-success" >Test</button>
 									<button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
 
 								</form>

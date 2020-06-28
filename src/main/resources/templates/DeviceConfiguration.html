@@ -79,10 +79,15 @@
 						</div>
 					</div>
 					<div class="col-7">
-						<div class="text-right upgrade-btn">
+						<div class="text-right upgrade-btn" th:if="${deviceType} == 'BMU' and ${not #lists.isEmpty(deviceConfigurations)}" style="visibility:hidden;">
 							<a data-toggle="modal" data-target="#responsive-modal"
 								class="btn waves-effect waves-light btn-rounded btn-success text-white"><i
-								class="fa fa-plus"></i>Add Device</a>
+								class="fa fa-plus" ></i>Add Device</a>
+						</div>
+						<div class="text-right upgrade-btn" th:unless="${deviceType} == 'MPU'" style="visibility:visible;">
+							<a data-toggle="modal" data-target="#responsive-modal"
+								class="btn waves-effect waves-light btn-rounded btn-success text-white"><i
+								class="fa fa-plus" ></i>Add Device</a>
 						</div>
 					</div>
 				</div>

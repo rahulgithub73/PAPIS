@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class LEDBoard extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long Id;
+	private Long id;
 	
 	@Column(name = "name")
 	private String name;
@@ -26,7 +27,7 @@ public class LEDBoard extends BaseEntity {
 	private String status;
 	
 	@Column(name = "device_type_id")
-	private String deviceTypeId;
+	private Integer deviceTypeId;
 	
 	@Column(name = "device_type_name")
 	private String deviceTypeName;
@@ -51,5 +52,9 @@ public class LEDBoard extends BaseEntity {
 
 	@Column(name = "data_change_seconds")
 	private String dataChangeSeconds;
+	
+	@Transient
+	private String periDeviceType;
+	
 
 }

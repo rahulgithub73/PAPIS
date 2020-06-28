@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
 import com.dan.papis.entity.DeviceConfiguration;
 import com.dan.papis.repository.DeviceConfigurationRepository;
@@ -25,9 +26,13 @@ public class DeviceConfigurationController {
 
 	@Autowired
 	DeviceConfigurationRepository deviceConfigurationRepository;
+	
+	@Autowired
+	PapisConfigConstant papisConfigConstant; 
 
 	@GetMapping("/deviceConfiguration")
 	public String deviceConfiguration(Model model) {
+		
 		model.addAttribute("deviceConfigurations", getDeviceConfiguration());
 		model.addAttribute("deviceConfiguration", new DeviceConfiguration());
 		return "/DeviceConfiguration";
@@ -43,6 +48,7 @@ public class DeviceConfigurationController {
 	public String addDeviceConfiguration(@ModelAttribute DeviceConfiguration deviceConfiguration, Model model) {
 		deviceConfiguration.setLastModifiedDate(PapisUtils.getDate());
 		deviceConfiguration.setStatus(PapisConstant.WORKING);
+		deviceConfiguration.setDeviceType(papisConfigConstant.getDeviceType());
 		deviceConfigurationRepository.save(deviceConfiguration);
 		this.updateModel(model);
 		return "/DeviceConfiguration";
@@ -100,7 +106,12 @@ public class DeviceConfigurationController {
 
 		return zonal;
 	}
-
+	
+	@ModelAttribute
+    public void addAttributes(Model model) {
+		model.addAttribute("deviceType",papisConfigConstant.getDeviceType());
+    }
+	
 	private List<DeviceConfiguration> getDeviceConfiguration() {
 
 		List<DeviceConfiguration> list = deviceConfigurationRepository.findAll();
