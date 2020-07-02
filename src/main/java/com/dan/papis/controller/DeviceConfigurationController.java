@@ -18,7 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
 import com.dan.papis.entity.DeviceConfiguration;
+import com.dan.papis.entity.EmergencyButton;
+import com.dan.papis.entity.LCDBoard;
+import com.dan.papis.entity.LEDBoard;
+import com.dan.papis.entity.PASystem;
 import com.dan.papis.repository.DeviceConfigurationRepository;
+import com.dan.papis.service.DeviceConfigurationService;
 import com.dan.papis.utils.PapisUtils;
 
 @Controller
@@ -26,13 +31,16 @@ public class DeviceConfigurationController {
 
 	@Autowired
 	DeviceConfigurationRepository deviceConfigurationRepository;
-	
+
 	@Autowired
-	PapisConfigConstant papisConfigConstant; 
+	PapisConfigConstant papisConfigConstant;
+
+	@Autowired
+	DeviceConfigurationService deviceConfigurationService;
 
 	@GetMapping("/deviceConfiguration")
 	public String deviceConfiguration(Model model) {
-		
+
 		model.addAttribute("deviceConfigurations", getDeviceConfiguration());
 		model.addAttribute("deviceConfiguration", new DeviceConfiguration());
 		return "/DeviceConfiguration";
@@ -78,6 +86,53 @@ public class DeviceConfigurationController {
 		return "/DeviceConfiguration";
 	}
 
+	@GetMapping("/periphralDevices/{deviceTypeId}/{deviceId}")
+	public String periphralDevices(@PathVariable String deviceTypeId,@PathVariable String deviceId, Model model) {
+		model.addAttribute("deviceType", papisConfigConstant.getDeviceType());
+		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
+		if (deviceTypeId.equals("1")) {
+			LEDBoard lEDBoard = new LEDBoard();
+			lEDBoard.setPeriDeviceType("1");
+			lEDBoard.setDeviceId(deviceId);
+			model.addAttribute("lEDBoard", lEDBoard);
+			model.addAttribute("lists", deviceConfigurationService.getAllPeriphralDevice(deviceId));
+			return "/LEDBoard";
+		} 
+		else if (deviceTypeId.equals("2")) {
+			LEDBoard lEDBoard = new LEDBoard();
+			lEDBoard.setPeriDeviceType("2");
+			lEDBoard.setDeviceId(deviceId);
+			model.addAttribute("lEDBoard", lEDBoard);
+			model.addAttribute("lists", deviceConfigurationService.getAllPeriphralDevice(deviceId));
+			return "/LEDBoard";
+		}else if (deviceTypeId.equals("3")) {
+			LCDBoard lCDBoard = new LCDBoard();
+			lCDBoard.setPeriDeviceType("3");
+			lCDBoard.setDeviceId(deviceId);
+			model.addAttribute("lCDBoard", lCDBoard);
+			model.addAttribute("lists", deviceConfigurationService.getAllPeriphralDevice(deviceId));
+			return "/LCDBoard";
+
+		} else if (deviceTypeId.equals("4")) {
+			PASystem paSystem = new PASystem();
+			paSystem.setPeriDeviceType("4");
+			paSystem.setDeviceId(deviceId);
+			model.addAttribute("paSystem",paSystem);
+			model.addAttribute("lists", deviceConfigurationService.getAllPeriphralDevice(deviceId));
+			return "/PASystem";
+
+		} else {
+			EmergencyButton emergencyButton = new EmergencyButton();
+			emergencyButton.setPeriDeviceType("5");
+			emergencyButton.setDeviceId(deviceId);
+			model.addAttribute("emergencyButton", emergencyButton);
+			model.addAttribute("lists", deviceConfigurationService.getAllPeriphralDevice(deviceId));
+			return "/EmergencyButton";
+
+		}
+
+	}
+
 	private void updateModel(Model model) {
 		model.addAttribute("deviceConfigurations", getDeviceConfiguration());
 		model.addAttribute("deviceConfiguration", new DeviceConfiguration());
@@ -106,12 +161,12 @@ public class DeviceConfigurationController {
 
 		return zonal;
 	}
-	
+
 	@ModelAttribute
-    public void addAttributes(Model model) {
-		model.addAttribute("deviceType",papisConfigConstant.getDeviceType());
-    }
-	
+	public void addAttributes(Model model) {
+		model.addAttribute("deviceType", papisConfigConstant.getDeviceType());
+	}
+
 	private List<DeviceConfiguration> getDeviceConfiguration() {
 
 		List<DeviceConfiguration> list = deviceConfigurationRepository.findAll();

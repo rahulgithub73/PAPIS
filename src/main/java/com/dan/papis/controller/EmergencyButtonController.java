@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
 import com.dan.papis.entity.EmergencyButton;
-import com.dan.papis.entity.PASystem;
+import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.EmergencyButtonRepo;
 import com.dan.papis.service.DeviceConfigurationService;
 import com.dan.papis.utils.PapisUtils;
@@ -31,21 +31,29 @@ public class EmergencyButtonController {
 
 	@Autowired
 	DeviceConfigurationService deviceConfigurationService;
-	
+
 	@GetMapping("/emergencyButton")
 	public String emergencyButton(Model model) {
-		model.addAttribute("emergencyButtons", getConfiguration());
 		EmergencyButton emergencyButton = new EmergencyButton();
-		emergencyButton.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(5));
+		List<EmergencyButton> list = emergencyButtonRepo.findAll();
+		if(!list.isEmpty()) {
+			model.addAttribute("lists", getConfiguration(list.get(0).getDeviceId()));
+			emergencyButton.setDeviceId(list.get(0).getDeviceId());
+		}else {
+			model.addAttribute("lists", list);
+			
+		}
+		emergencyButton.setPeriDeviceType("5");
 		model.addAttribute("emergencyButton", emergencyButton);
 		return "/EmergencyButton";
 	}
 
-	@GetMapping("/addEmergencyButton")
-	public String addEmergencyButton(Model model) {
-		model.addAttribute("emergencyButtons", getConfiguration());
+	@GetMapping("/addEmergencyButton/{deviceId}")
+	public String addEmergencyButton(Model model,@PathVariable String deviceId) {
+		model.addAttribute("lists", getConfiguration(deviceId));
 		EmergencyButton emergencyButton = new EmergencyButton();
-		emergencyButton.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(5));
+		emergencyButton.setDeviceId(deviceId);
+		emergencyButton.setPeriDeviceType("5");
 		model.addAttribute("emergencyButton", emergencyButton);
 		return "/AddEmergencyButton";
 	}
@@ -54,8 +62,9 @@ public class EmergencyButtonController {
 	public String addEmergencyButton(@ModelAttribute EmergencyButton emergencyButton, Model model) {
 		emergencyButton.setLastModifiedDate(PapisUtils.getDate());
 		emergencyButton.setStatus(PapisConstant.WORKING);
+		emergencyButton.setDeviceTypeId(5);
 		emergencyButtonRepo.save(emergencyButton);
-		this.updateModel(model);
+		this.updateModel(model,emergencyButton.getDeviceId());
 		return "/EmergencyButton";
 	}
 
@@ -65,11 +74,11 @@ public class EmergencyButtonController {
 		Optional<EmergencyButton> emergencyButton = emergencyButtonRepo.findById(id);
 		if (emergencyButton.isPresent()) {
 			EmergencyButton pa = emergencyButton.get();
-			pa.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(5));
+			pa.setPeriDeviceType("5");
 			model.addAttribute("emergencyButton", pa);
-			
-		}
-		model.addAttribute("emergencyButtons", getConfiguration());
+			model.addAttribute("lists", getConfiguration(pa.getDeviceId()));
+          }
+		
 
 		return "/EmergencyButton";
 	}
@@ -80,32 +89,39 @@ public class EmergencyButtonController {
 		Optional<EmergencyButton> emergencyButton = emergencyButtonRepo.findById(id);
 		if (emergencyButton.isPresent()) {
 			emergencyButtonRepo.delete(emergencyButton.get());
+			this.updateModel(model,emergencyButton.get().getDeviceId());
 		}
 
-		this.updateModel(model);
+		
 		return "/EmergencyButton";
 	}
 
-	private void updateModel(Model model) {
-		model.addAttribute("emergencyButtons", getConfiguration());
+	
+	private void updateModel(Model model,String deviceId) {
+		model.addAttribute("lists", getConfiguration(deviceId));
 		EmergencyButton emergencyButton = new EmergencyButton();
-		emergencyButton.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(5));
+		emergencyButton.setPeriDeviceType("5");
+		emergencyButton.setDeviceId(deviceId);
 		model.addAttribute("emergencyButton", emergencyButton);
 	}
-	
+
 	@ModelAttribute
 	public void addAttributes(Model model) {
 		model.addAttribute("deviceType", papisConfigConstant.getDeviceType());
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
+	
+	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+        return deviceConfigurationService.getAllPeriphralDevice(deviceId);
+     }
 
-	private List<EmergencyButton> getConfiguration() {
+	private List<EmergencyButton> getConfiguration1() {
 
 		List<EmergencyButton> list = emergencyButtonRepo.findAll();
 		List<EmergencyButton> objects = new ArrayList<>();
 		for (EmergencyButton dc : list) {
 			if (dc.getDeviceTypeId() != null) {
-				dc.setDeviceTypeName(deviceConfigurationService.getDeviceType().get(5));
+				dc.setDeviceTypeName("5");
 			}
 			if (dc.getLastModifiedDate() != null) {
 				dc.setLastModified(PapisUtils.getFormattedDate(dc.getLastModifiedDate()));

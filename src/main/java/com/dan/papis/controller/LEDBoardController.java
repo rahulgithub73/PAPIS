@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
-import com.dan.papis.entity.LCDBoard;
 import com.dan.papis.entity.LEDBoard;
-import com.dan.papis.entity.PASystem;
+import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.LEDBoardRepo;
 import com.dan.papis.service.DeviceConfigurationService;
 import com.dan.papis.utils.PapisUtils;
@@ -35,9 +34,16 @@ public class LEDBoardController {
 	
 	@GetMapping("/lEDBoard")
 	public String lEDBoard(Model model) {
-		model.addAttribute("lEDBoards", getConfiguration());
 		LEDBoard lEDBoard = new LEDBoard();
-		lEDBoard.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(1));
+		List<LEDBoard> list = lEDBoardRepo.findAll();
+		if(!list.isEmpty()) {
+			model.addAttribute("lists", getConfiguration(list.get(0).getDeviceId()));
+			lEDBoard.setDeviceId(list.get(0).getDeviceId());
+		}else {
+			model.addAttribute("lists", list);
+		
+		}
+		lEDBoard.setPeriDeviceType("1");
 		model.addAttribute("lEDBoard", lEDBoard);
 		return "/LEDBoard";
 	}
@@ -48,7 +54,7 @@ public class LEDBoardController {
 		lEDBoard.setDeviceId(deviceId);
 		lEDBoard.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(1));
 		model.addAttribute("lEDBoard", lEDBoard);
-		model.addAttribute("lEDBoards", getConfiguration());
+		model.addAttribute("lists", getConfiguration(deviceId));
 		return "/LEDBoard";
 	}
 
@@ -56,9 +62,9 @@ public class LEDBoardController {
 	public String addLEDBoard(@ModelAttribute LEDBoard lEDBoard, Model model) {
 		lEDBoard.setLastModifiedDate(PapisUtils.getDate());
 		lEDBoard.setStatus(PapisConstant.WORKING);
-		lEDBoard.setDeviceTypeId(1);
+		lEDBoard.setDeviceTypeId(Integer.valueOf(lEDBoard.getPeriDeviceType()));
 		lEDBoardRepo.save(lEDBoard);
-		this.updateModel(model);
+		this.updateModel(model,lEDBoard.getDeviceId(),lEDBoard.getDeviceTypeId());
 		return "/LEDBoard";
 	}
 
@@ -68,10 +74,11 @@ public class LEDBoardController {
 		Optional<LEDBoard> lEDBoard = lEDBoardRepo.findById(id);
 		if (lEDBoard.isPresent()) {
 			LEDBoard pa = lEDBoard.get();
-			pa.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(1));
+			pa.setPeriDeviceType(String.valueOf(pa.getDeviceTypeId()));
 			model.addAttribute("lEDBoard", pa);
+			model.addAttribute("lists", getConfiguration(pa.getDeviceId()));
 		}
-		model.addAttribute("lEDBoards", getConfiguration());
+		
 
 		return "/LEDBoard";
 	}
@@ -82,15 +89,18 @@ public class LEDBoardController {
 		Optional<LEDBoard> lEDBoard = lEDBoardRepo.findById(id);
 		if (lEDBoard.isPresent()) {
 			lEDBoardRepo.delete(lEDBoard.get());
+			this.updateModel(model,lEDBoard.get().getDeviceId(),lEDBoard.get().getDeviceTypeId());
 		}
 
-		this.updateModel(model);
+		
 		return "/LEDBoard";
 	}
 
-	private void updateModel(Model model) {
-		model.addAttribute("lEDBoards", getConfiguration());
+	private void updateModel(Model model,String deviceId,Integer deviceTypeId) {
+		model.addAttribute("lists", getConfiguration(deviceId));
 		LEDBoard lEDBoard = new LEDBoard();
+		lEDBoard.setDeviceId(deviceId);
+		lEDBoard.setPeriDeviceType(String.valueOf(deviceTypeId));
 		lEDBoard.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(1));
 		model.addAttribute("lEDBoard", lEDBoard);
 	}
@@ -101,7 +111,12 @@ public class LEDBoardController {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
 
-	private List<LEDBoard> getConfiguration() {
+	
+	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+        return deviceConfigurationService.getAllPeriphralDevice(deviceId);
+     }
+
+	private List<LEDBoard> getConfiguration1() {
 
 		List<LEDBoard> list = lEDBoardRepo.findAll();
 		List<LEDBoard> objects = new ArrayList<>();

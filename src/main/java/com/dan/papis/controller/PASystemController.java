@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
 import com.dan.papis.entity.PASystem;
+import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.PASystemRepo;
 import com.dan.papis.service.DeviceConfigurationService;
 import com.dan.papis.utils.PapisUtils;
@@ -33,17 +34,26 @@ public class PASystemController {
 
 	@GetMapping("/paSystem")
 	public String paSystem(Model model) {
-		model.addAttribute("paSystems", getConfiguration());
 		PASystem paSystem = new PASystem();
-		paSystem.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(4));
+		List<PASystem> list = paSystemRepo.findAll();
+		if(!list.isEmpty()) {
+			model.addAttribute("lists", getConfiguration(list.get(0).getDeviceId()));
+			paSystem.setDeviceId(list.get(0).getDeviceId());
+		}else {
+			model.addAttribute("lists", list);
+			
+		}
+		paSystem.setPeriDeviceType("4");
 		model.addAttribute("paSystem",paSystem);
 		return "/PASystem";
 	}
 
-	@GetMapping("/addPASystem")
-	public String addPASystem(Model model) {
+	@GetMapping("/addPASystem/{deviceId}")
+	public String addPASystem(Model model,@PathVariable String deviceId) {
+		model.addAttribute("lists", getConfiguration(deviceId));
 		PASystem paSystem = new PASystem();
-		paSystem.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(4));
+		paSystem.setDeviceId(deviceId);
+		paSystem.setPeriDeviceType("4");
 		model.addAttribute("paSystem",paSystem);
 		return "/AddPASystem";
 	}
@@ -54,7 +64,7 @@ public class PASystemController {
 		paSystem.setStatus(PapisConstant.WORKING);
 		paSystem.setDeviceTypeId(4);
 		paSystemRepo.save(paSystem);
-		this.updateModel(model);
+		this.updateModel(model,paSystem.getDeviceId());
 		return "/PASystem";
 	}
 
@@ -64,10 +74,11 @@ public class PASystemController {
 		Optional<PASystem> paSystem = paSystemRepo.findById(id);
 		if (paSystem.isPresent()) {
 			PASystem pa = paSystem.get();
-			pa.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(4));
+			pa.setPeriDeviceType("4");
 			model.addAttribute("paSystem", pa);
+			model.addAttribute("lists", getConfiguration(pa.getDeviceId()));
 		}
-		model.addAttribute("paSystems", getConfiguration());
+		
 
 		return "/PASystem";
 	}
@@ -78,16 +89,18 @@ public class PASystemController {
 		Optional<PASystem> paSystem = paSystemRepo.findById(id);
 		if (paSystem.isPresent()) {
 			paSystemRepo.delete(paSystem.get());
+			this.updateModel(model,paSystem.get().getDeviceId());
 		}
 
-		this.updateModel(model);
+		
 		return "/PASystem";
 	}
 
-	private void updateModel(Model model) {
-		model.addAttribute("paSystems", getConfiguration());
+	private void updateModel(Model model,String deviceId) {
+		model.addAttribute("lists", getConfiguration(deviceId));
 		PASystem paSystem = new PASystem();
-		paSystem.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(4));
+		paSystem.setPeriDeviceType("4");
+		paSystem.setDeviceId(deviceId);
 		model.addAttribute("paSystem", paSystem);
 	}
 
@@ -97,13 +110,16 @@ public class PASystemController {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
 
-	private List<PASystem> getConfiguration() {
+	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+        return deviceConfigurationService.getAllPeriphralDevice(deviceId);
+     }
+	private List<PASystem> getConfiguration1() {
 
 		List<PASystem> list = paSystemRepo.findAll();
 		List<PASystem> objects = new ArrayList<>();
 		for (PASystem dc : list) {
 			if (dc.getDeviceTypeId() != null) {
-				dc.setDeviceTypeName(deviceConfigurationService.getDeviceType().get(4));
+				dc.setDeviceTypeName("4");
 			}
 			if (dc.getLastModifiedDate() != null) {
 				dc.setLastModified(PapisUtils.getFormattedDate(dc.getLastModifiedDate()));

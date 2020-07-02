@@ -15,13 +15,13 @@ public class PASystem extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long Id;
 
 	@Column(name = "device_id")
 	private String deviceId;
 
-	@Column(name = "device_name")
-	private String deviceName;
+	@Column(name = "name")
+	private String name;
 
 	@Column(name = "device_type_id")
 	private Integer deviceTypeId;

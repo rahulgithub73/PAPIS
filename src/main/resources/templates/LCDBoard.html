@@ -19,6 +19,67 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script type="text/javascript">
+function periDeviceTypeChanged(periDeviceType)
+{
+	var e = document.getElementById("deviceId");
+	var deviceId = e.options[e.selectedIndex].value;
+	window.location="/periphralDevices/"+periDeviceType+"/"+deviceId
+    
+}
+function deviceIdChanged(deviceId)
+{
+	var e = document.getElementById("periDeviceType");
+	var periDeviceType = e.options[e.selectedIndex].value;
+	window.location="/periphralDevices/"+periDeviceType+"/"+deviceId
+   
+}
+function updateById(id,periDeviceType)
+{
+	if(periDeviceType == 1){
+		window.location="/editLEDBoard/"+id
+	}
+	else if(periDeviceType == 2){
+		window.location="/editLEDBoard/"+id
+	}
+    else if(periDeviceType == 3){
+    	window.location="/editLCDBoard/"+id
+	}
+    else if(periDeviceType == 4){
+    	window.location="/editPASystem/"+id
+    } else if(periDeviceType == 5){
+    	window.location="/editEmergencyButton/"+id
+    }else{
+    	alert("Internal server error")
+    }
+	
+	
+   
+}
+function deleteById(id,periDeviceType)
+{
+	
+	
+	if(periDeviceType == 1){
+		window.location="/deleteLEDBoard/"+id
+	}
+	else if(periDeviceType == 2){
+		window.location="/deleteLEDBoard/"+id
+	}
+    else if(periDeviceType == 3){
+    	window.location="/deleteLCDBoard/"+id
+	}
+    else if(periDeviceType == 4){
+    	window.location="/deletePASystem/"+id
+    } else if(periDeviceType == 5){
+    	window.location="/deleteEmergencyButton/"+id
+    }else{
+    	alert("Internal server error")
+    }
+	
+   
+}
+</script>
 </head>
 
 <body>
@@ -102,7 +163,7 @@
 										</thead>
 										<tbody>
 
-											<tr th:each="dc: ${lCDBoards}">
+											<tr th:each="dc: ${lists}">
 												<td th:text="${dc.deviceId}"></td>
 												<td th:text="${dc.deviceTypeName}"></td>
 												<td th:text="${dc.boardIPAddress}"></td>
@@ -114,11 +175,11 @@
 												<td>
 													<ul class="list-inline m-0">
 
-														<li class="list-inline-item"><a th:href="${'/editLCDBoard/'+dc.id}">
-																<button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+														<li class="list-inline-item">
+																<button class="btn btn-success btn-sm rounded-0" th:onclick="'javascript:updateById(\'' + ${dc.Id} + '\',\'' + ${dc.deviceTypeId} + '\');'" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
 																	<i class="fa fa-edit"></i>
 																</button>
-														</a></li>
+														</li>
 														<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.Id}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
 																	<i class="fa fa-trash"></i>
 																</button></a></li>
@@ -140,7 +201,7 @@
 																	</div>
 																	<div class="modal-footer">
 																		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-																		<a th:href="${'/deleteLCDBoard/'+dc.Id}"><button class="btn btn-danger">Yes</button></a>
+																	<button class="btn btn-danger" th:onclick="'javascript:deleteById(\'' + ${dc.Id} + '\',\'' + ${dc.deviceTypeId} + '\');'" >Yes</button>
 																	</div>
 																</div>
 																<!-- /.modal-content -->
@@ -157,7 +218,7 @@
 										</tbody>
 									</table>
 									<div class="col-12" style="text-align: center;">
-									<span th:if="${#lists.isEmpty(lCDBoards)}">Record
+									<span th:if="${#lists.isEmpty(lists)}">Record
 										not found</span>
 								</div>
 								</div>
@@ -177,10 +238,12 @@
 
 									<div class="container-fluid">
 
-										<div class="row">
+											<div class="row">
 											<div class="col-6">
 												<div class="form-group" >
-															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label> <select class="form-control form-control-line" th:field="*{deviceId}" required>
+															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
+															 <select id="deviceId" class="form-control form-control-line" 
+															 onchange="javascript:deviceIdChanged(this.value)"  th:field="*{deviceId}" required>
 																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
 															</select>
 
@@ -189,8 +252,20 @@
 											<div class="col-md-6">
 
                                                     <input type="hidden"  class="form-control" th:field="*{Id}">
+											
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Device type:</label> <input type="text" readonly="readonly" class="form-control" th:field="*{periDeviceType}">
+												    <label for="recipient-name" class="control-label">Device type:</label> 
+													<select id="periDeviceType" class="form-control form-control-line"
+													 onchange="javascript:periDeviceTypeChanged(this.value)"  th:field="*{periDeviceType}">
+														
+														<option th:value="1" >LED dislination board</option>
+														<option th:value="2">LED slave display board</option>
+														<option th:value="3">LCD slave display board</option>
+														<option th:value="4">PA system</option>
+														<option th:value="5">Emergency switch button</option>
+
+													</select>
+
 												</div>
 
 											</div>
@@ -218,14 +293,18 @@
 											<div class="col-md-6">
 
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Board IP Address:</label> <input type="text" class="form-control" th:field="*{boardIPAddress}">
+													<label for="recipient-name" class="control-label">Board IP Address:</label>
+													 <input type="text" class="form-control" th:field="*{boardIPAddress}"
+													  required pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$">
 												</div>
 
 											</div>
 											<div class="col-md-6">
 
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Board MAC Address:</label> <input type="text" class="form-control" th:field="*{boardMACAddress}">
+													<label for="recipient-name" class="control-label">Board MAC Address:</label> 
+													<input type="text" class="form-control" th:field="*{boardMACAddress}"
+													required pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$">
 												</div>
 
 											</div>

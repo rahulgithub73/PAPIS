@@ -15,7 +15,7 @@ public class LEDBoard extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long Id;
 	
 	@Column(name = "name")
 	private String name;
