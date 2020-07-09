@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -37,5 +39,8 @@ public class EmergencyButton extends BaseEntity {
 	
 	@Transient
 	private String periDeviceType;
+	
+	@Transient
+	private MultipartFile file;
 
 }

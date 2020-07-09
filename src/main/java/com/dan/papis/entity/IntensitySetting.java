@@ -15,6 +15,18 @@ public class IntensitySetting extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
+	
+	@Column(name = "device_Id")
+	private String deviceId;
+	
+	@Column(name = "pre_device_Id")
+	private String preDeviceId;
+	
+	@Column(name = "device_type_id")
+	private Integer deviceTypeId;
+	
+	@Column(name = "device_type_name")
+	private String deviceTypeName;
 
 	@Column(name = "intensity_type")
 	private String intensityType;

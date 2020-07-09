@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
+import com.dan.papis.entity.IdNameVO;
 import com.dan.papis.entity.LEDBoard;
 import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.LEDBoardRepo;
@@ -115,6 +119,21 @@ public class LEDBoardController {
 	private List<PeriphralDevices>  getConfiguration(String deviceId) {
         return deviceConfigurationService.getAllPeriphralDevice(deviceId);
      }
+	
+	@RequestMapping(value = "/ledLists/{deviceTypeId}", method = RequestMethod.GET)
+	public @ResponseBody
+	List<IdNameVO> findAllList(@PathVariable Integer deviceTypeId) {
+		
+		List<LEDBoard> list = lEDBoardRepo.findByDeviceTypeId(deviceTypeId);
+		List<IdNameVO> lists = new ArrayList<>();
+		for(LEDBoard ob : list) {
+			IdNameVO idNameVO= new IdNameVO();
+			idNameVO.setId(ob.getBoardHardwareId());
+			idNameVO.setName(ob.getName());
+			lists.add(idNameVO);
+		}
+		return lists;
+	}
 
 	private List<LEDBoard> getConfiguration1() {
 

@@ -3,11 +3,10 @@ package com.dan.papis.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.dan.papis.filter.LoginFilter;
@@ -32,5 +31,7 @@ public class AppConfig implements WebMvcConfigurer {
 	public LoginFilter loginFilter() {
 		return new LoginFilter();
 	}
+	
+	
 
 }

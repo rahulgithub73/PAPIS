@@ -31,6 +31,49 @@
 			}
 		});
 	}
+	
+	function findList(propertyTypeId) {
+		
+		if(propertyTypeId == 1 || propertyTypeId == 2){
+			$.ajax({
+				url : "/ledLists/" + propertyTypeId,
+				success : function(data) {
+				var html = '';
+                var len = data.length;
+                for ( var i = 0; i < len; i++) {
+                    html += '<option value="' + data[i].id + '">'
+                            + data[i].id + '</option>';
+                }
+                html += '</option>';
+                    $('#preDeviceId').html(html);
+					
+					
+				}
+			});
+		}else if(propertyTypeId == 3){
+			$.ajax({
+				url : "/lcdLists/" + propertyTypeId,
+				success : function(data) {
+				var html = '';
+                var len = data.length;
+                for ( var i = 0; i < len; i++) {
+                    html += '<option value="' + data[i].id + '">'
+                            + data[i].id + '</option>';
+                }
+                html += '</option>';
+                    $('#preDeviceId').html(html);
+					
+					
+				}
+			});
+		}
+		
+	}
+	function findIntensitySetting(deviceId)
+	{
+		window.location="/findIntensitySetting/"+deviceId
+	   
+	}
 </script>
 </head>
 
@@ -72,9 +115,25 @@
 							</nav>
 						</div>
 					</div>
-					<div class="col-7">
+					<div class="col-2" style="text-align:right;margin-top:15px">
+					
+					<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
+						
+
+					</div>
+					<div class="col-3">
+						 <select id="deviceId" class="form-control form-control-line"  th:field="*{deviceId}" required
+						 onchange="javascript:findIntensitySetting(this.value)">
+								<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+						 </select> 
+
+					</div>
+														
+					<div class="col-2">
 						<div class="text-right upgrade-btn">
-							<a data-toggle="modal" data-target="#responsive-modal" class="btn waves-effect waves-light btn-rounded btn-success text-white"><i class="fa fa-plus"></i>Add Intensity Setting</a>
+							<a data-toggle="modal" data-target="#responsive-modal"  
+							 class="btn waves-effect waves-light btn-rounded btn-success text-white">
+							<i class="fa fa-plus"></i>Add Intensity Setting</a>
 						</div>
 					</div>
 				</div>
@@ -97,24 +156,27 @@
 								<table class="table">
 									<thead class="thead-light">
 										<tr>
-											<th scope="col">Intensity Type</th>
+										    <th scope="col">Device Type Name</th>
+										    <th scope="col">Device Type Id</th>
+										    <th scope="col">Intensity Type</th>
 											<th scope="col">Night Intensity</th>
 											<th scope="col">Night Start Time</th>
 											<th scope="col">Night End Time</th>
 											<th scope="col">Day Intensity</th>
-											<th scope="col">Last login time</th>
 											<th scope="col">Action</th>
 										</tr>
 									</thead>
 									<tbody>
 
 										<tr th:each="dc: ${intensitySettings}">
-											<td th:text="${dc.intensityType}"></td>
+										    <td th:text="${dc.deviceTypeName}"></td>
+										    <td th:text="${dc.preDeviceId}"></td>
+										    <td th:text="${dc.intensityType}"></td>
 											<td th:text="${dc.nightIntensity}+'%'"></td>
 											<td th:text="${dc.nightStartTime}"></td>
 											<td th:text="${dc.nightEndTime}"></td>
 											<td th:text="${dc.dayIntensity}+'%'"></td>
-											<td th:text="${dc.lastModifiedDate}"></td>
+											
 											<td>
 												<ul class="list-inline m-0">
 
@@ -123,7 +185,8 @@
 																<i class="fa fa-edit"></i>
 															</button>
 													</a></li>
-													<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.Id}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
+													<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.Id}">
+													<button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
 																<i class="fa fa-trash"></i>
 															</button></a></li>
 												</ul>
@@ -131,14 +194,15 @@
 												<div class="col-12">
 
 													<!-- sample modal content -->
-													<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.Id }" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+													<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.Id }" tabindex="-1" role="dialog" 
+													aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
 														<div class="modal-dialog modal-sm">
 															<div class="modal-content">
 																<div class="modal-header">
 																	<h4 class="modal-title" id="mySmallModalLabel">Delete device configuration</h4>
 																	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 																</div>
-																<div class="modal-body">Are you sure you want to delete the device configuration ?</div>
+																<div class="modal-body">Are you sure you want to delete the Intensity Setting ?</div>
 																<div class="modal-footer">
 																	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 																	<a th:href="${'/deleteIntensitySetting/'+dc.Id}"><button class="btn btn-danger">Yes</button></a>
@@ -168,7 +232,8 @@
 
 					<div class="col-12">
 						<!-- sample modal content -->
-						<div id="responsive-modal" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" th:fragment="responsiveDeviceModal">
+						<div id="responsive-modal"  class="modal bs-example-modal-lg" tabindex="-1" role="dialog" 
+						        aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" th:fragment="responsiveDeviceModal">
 							<div class="modal-dialog modal-lg">
 								<div class="modal-content">
 									<form action="#" th:action="@{/addIntensitySetting}" th:object="${intensitySetting}" method="post">
@@ -182,6 +247,46 @@
 
 											<div class="container-fluid">
 											<input type="hidden" class="form-control" th:field="*{Id}">
+											
+											<div class="row">
+											<div class="col-md-4">
+											<div class="form-group">
+												    <label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label> 
+													<select id="deviceId" class="form-control form-control-line"  th:field="*{deviceId}" required>
+								                         <option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+						                             </select>
+												</div>
+												
+											</div>
+											<div class="col-md-4">
+											<div class="form-group">
+												    <label for="recipient-name" class="control-label">Device type:</label> 
+													<select id="periDeviceType" class="form-control form-control-line"
+													 onchange="javascript:findList(this.value)"  th:field="*{deviceTypeId}">
+														
+														<option th:value="1" >LED dislination board</option>
+														<option th:value="2">LED slave display board</option>
+														<option th:value="3">LCD slave display board</option>
+														
+													</select>
+
+												</div>
+												
+											</div>
+											
+											<div class="col-md-4">
+
+												<div class="form-group" >
+															<label for="recipient-name" class="control-label">Select Device Type id:</label>
+															 <select id="preDeviceId" class="form-control form-control-line" 
+															  th:field="*{preDeviceId}" required>
+																<option  th:each="preDevice : ${preDevices}" th:value="${preDevice.Id}" th:utext="${preDevice.boardHardwareId}"/>
+															</select>
+
+														</div>
+
+											</div>
+										</div>
 												<div class="row">
 													<div class="col-md-5">
 
@@ -217,7 +322,8 @@
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Night Start Time:</label> 
-															<input type="text" class="form-control" th:field="*{nightStartTime}">
+															<input type="text" class="form-control" th:field="*{nightStartTime}" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}"
+															title="Please enter valid format HH:MM:SS">
 														</div>
 
 													</div>
@@ -226,7 +332,8 @@
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Night End Time:</label> 
-															<input type="text" class="form-control" th:field="*{nightEndTime}">
+															<input type="text" class="form-control" th:field="*{nightEndTime}" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}"
+															title="Please enter valid format HH:MM:SS">
 														</div>
 
 													</div>

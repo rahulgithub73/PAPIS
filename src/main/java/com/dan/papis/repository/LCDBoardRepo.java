@@ -8,5 +8,6 @@ import com.dan.papis.entity.LCDBoard;
 
 public interface LCDBoardRepo extends JpaRepository<LCDBoard, Long> {
 	List<LCDBoard> findByDeviceId(String deviceId);
+	List<LCDBoard> findByDeviceTypeId(Integer deviceTypeId);
 
 }

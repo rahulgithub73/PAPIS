@@ -15,9 +15,18 @@ public class Slogans extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
+	
+	@Column(name = "device_Id")
+	private String deviceId;
+	
+	@Column(name = "device_type_id")
+	private Integer deviceTypeId;
+	
+	@Column(name = "device_type_name")
+	private String deviceTypeName;
 
 	@Column(name = "message_type_id")
-	private String messageTypeId;
+	private Integer messageTypeId;
 	
 	@Column(name = "message_type")
 	private String messageType;

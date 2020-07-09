@@ -62,6 +62,17 @@ public class DeviceConfigurationService {
 
 		return map;
 	}
+	
+	public Map<Integer, String> getSlogansType() {
+
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "Welcome message");
+		map.put(2, "Farewell message");
+		map.put(3, "Slogans");
+		
+
+		return map;
+	}
 
 	public List<PeriphralDevices> getAllPeriphralDevice(String deviceId) {
         List<EmergencyButton> emergencyButtonList = emergencyButtonRepo.findByDeviceId(deviceId);

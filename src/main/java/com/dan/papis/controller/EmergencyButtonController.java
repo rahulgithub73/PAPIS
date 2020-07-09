@@ -18,6 +18,7 @@ import com.dan.papis.entity.EmergencyButton;
 import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.EmergencyButtonRepo;
 import com.dan.papis.service.DeviceConfigurationService;
+import com.dan.papis.service.FileSystemStorageService;
 import com.dan.papis.utils.PapisUtils;
 
 @Controller
@@ -31,6 +32,9 @@ public class EmergencyButtonController {
 
 	@Autowired
 	DeviceConfigurationService deviceConfigurationService;
+	
+	@Autowired 
+	FileSystemStorageService fileSystemStorageService;
 
 	@GetMapping("/emergencyButton")
 	public String emergencyButton(Model model) {
@@ -63,6 +67,7 @@ public class EmergencyButtonController {
 		emergencyButton.setLastModifiedDate(PapisUtils.getDate());
 		emergencyButton.setStatus(PapisConstant.WORKING);
 		emergencyButton.setDeviceTypeId(5);
+		fileSystemStorageService.store(emergencyButton.getFile());
 		emergencyButtonRepo.save(emergencyButton);
 		this.updateModel(model,emergencyButton.getDeviceId());
 		return "/EmergencyButton";
