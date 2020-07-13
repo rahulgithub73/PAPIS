@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -15,19 +18,16 @@ public class Slogans extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
-	
-	@Column(name = "device_Id")
-	private String deviceId;
-	
+
+	@Column(name = "device_id")
+	private Long deviceId;
+
 	@Column(name = "device_type_id")
 	private Integer deviceTypeId;
-	
-	@Column(name = "device_type_name")
-	private String deviceTypeName;
 
 	@Column(name = "message_type_id")
 	private Integer messageTypeId;
-	
+
 	@Column(name = "message_type")
 	private String messageType;
 
@@ -36,8 +36,14 @@ public class Slogans extends BaseEntity {
 
 	@Column(name = "language")
 	private String language;
-	
+
 	@Column(name = "audio_file")
 	private String audioFile;
+
+	@Transient
+	private MultipartFile file;
+
+	@Transient
+	private String deviceTypeName;
 
 }

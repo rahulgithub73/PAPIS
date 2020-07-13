@@ -9,7 +9,7 @@ public class PeriphralDevices {
 
 	private Long id;
 
-	private String deviceId;
+	private Long deviceId;
 
 	private Integer deviceTypeId;
 	
@@ -20,6 +20,8 @@ public class PeriphralDevices {
 	private String name;
 
 	private String status;
+	
+	private String deviceIdDisplay;
 
 	private LocalDateTime lastModifiedDate;
 

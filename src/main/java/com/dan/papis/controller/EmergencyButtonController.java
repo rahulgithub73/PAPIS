@@ -53,7 +53,7 @@ public class EmergencyButtonController {
 	}
 
 	@GetMapping("/addEmergencyButton/{deviceId}")
-	public String addEmergencyButton(Model model,@PathVariable String deviceId) {
+	public String addEmergencyButton(Model model,@PathVariable Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		EmergencyButton emergencyButton = new EmergencyButton();
 		emergencyButton.setDeviceId(deviceId);
@@ -67,7 +67,8 @@ public class EmergencyButtonController {
 		emergencyButton.setLastModifiedDate(PapisUtils.getDate());
 		emergencyButton.setStatus(PapisConstant.WORKING);
 		emergencyButton.setDeviceTypeId(5);
-		fileSystemStorageService.store(emergencyButton.getFile());
+		String audioFile = fileSystemStorageService.store(emergencyButton.getFile());
+		emergencyButton.setAudioFile(audioFile);
 		emergencyButtonRepo.save(emergencyButton);
 		this.updateModel(model,emergencyButton.getDeviceId());
 		return "/EmergencyButton";
@@ -102,7 +103,7 @@ public class EmergencyButtonController {
 	}
 
 	
-	private void updateModel(Model model,String deviceId) {
+	private void updateModel(Model model,Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		EmergencyButton emergencyButton = new EmergencyButton();
 		emergencyButton.setPeriDeviceType("5");
@@ -116,7 +117,7 @@ public class EmergencyButtonController {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
 	
-	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+	private List<PeriphralDevices>  getConfiguration(Long deviceId) {
         return deviceConfigurationService.getAllPeriphralDevice(deviceId);
      }
 

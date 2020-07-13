@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -17,10 +18,7 @@ public class Languages extends BaseEntity {
 	private Long Id;
 
 	@Column(name = "train_no")
-	private String trainNo;
-
-	@Column(name = "train_name")
-	private String trainName;
+	private Long trainNo;
 
 	@Column(name = "language1")
 	private String language1;
@@ -33,5 +31,8 @@ public class Languages extends BaseEntity {
 
 	@Column(name = "language4")
 	private String language4;
+	
+	@Transient
+	private String trainNameEnglish;
 
 }

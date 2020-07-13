@@ -19,6 +19,7 @@ import com.dan.papis.constant.PapisConfigConstant;
 import com.dan.papis.constant.PapisConstant;
 import com.dan.papis.entity.IdNameVO;
 import com.dan.papis.entity.LCDBoard;
+import com.dan.papis.entity.LEDBoard;
 import com.dan.papis.entity.PeriphralDevices;
 import com.dan.papis.repository.LCDBoardRepo;
 import com.dan.papis.service.DeviceConfigurationService;
@@ -53,7 +54,7 @@ public class LCDBoardController {
 	}
 
 	@GetMapping("/addLCDBoard/{deviceId}")
-	public String addLCDBoard(Model model,@PathVariable String deviceId) {
+	public String addLCDBoard(Model model,@PathVariable Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		LCDBoard lCDBoard = new LCDBoard();
 		lCDBoard.setDeviceId(deviceId);
@@ -100,7 +101,7 @@ public class LCDBoardController {
 		return "/LCDBoard";
 	}
 
-	private void updateModel(Model model,String deviceId) {
+	private void updateModel(Model model,Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		LCDBoard lCDBoard = new LCDBoard();
 		lCDBoard.setPeriDeviceType("3");
@@ -114,7 +115,7 @@ public class LCDBoardController {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
 	
-	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+	private List<PeriphralDevices>  getConfiguration(Long deviceId) {
         return deviceConfigurationService.getAllPeriphralDevice(deviceId);
      }
 	
@@ -126,8 +127,8 @@ public class LCDBoardController {
 		List<IdNameVO> lists = new ArrayList<>();
 		for(LCDBoard ob : list) {
 			IdNameVO idNameVO= new IdNameVO();
-			idNameVO.setId(ob.getBoardHardwareId());
-			idNameVO.setName(ob.getName());
+			idNameVO.setId(ob.getId());
+			idNameVO.setName(this.getBoardHardwareId(ob));
 			lists.add(idNameVO);
 		}
 		return lists;
@@ -151,4 +152,17 @@ public class LCDBoardController {
 		return objects;
 
 	}
+	
+	private String getBoardHardwareId(LCDBoard dc) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(dc.getVendorCode());
+		sb.append("-");
+		sb.append(dc.getYear());
+		sb.append("-");
+		sb.append(dc.getUniqueSerialNumber());
+		return sb.toString();
+		
+	}
+
 }

@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dan.papis.entity.Languages;
 import com.dan.papis.repository.LanguagesRepo;
+import com.dan.papis.service.DeviceConfigurationService;
 
 @Controller
 public class LanguagesController {
-	
+
+	@Autowired
+	DeviceConfigurationService deviceConfigurationService;
+
 	@Autowired
 	LanguagesRepo languagesRepo;
 
@@ -66,6 +70,12 @@ public class LanguagesController {
 	private void updateModel(Model model) {
 		model.addAttribute("languagess", languagesRepo.findAll());
 		model.addAttribute("languages", new Languages());
+	}
+
+	@ModelAttribute
+	public void addAttributes(Model model) {
+		model.addAttribute("trains", deviceConfigurationService.getTrains());
+
 	}
 
 }

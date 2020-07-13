@@ -42,7 +42,7 @@
                 var len = data.length;
                 for ( var i = 0; i < len; i++) {
                     html += '<option value="' + data[i].id + '">'
-                            + data[i].id + '</option>';
+                            + data[i].name + '</option>';
                 }
                 html += '</option>';
                     $('#preDeviceId').html(html);
@@ -58,7 +58,7 @@
                 var len = data.length;
                 for ( var i = 0; i < len; i++) {
                     html += '<option value="' + data[i].id + '">'
-                            + data[i].id + '</option>';
+                            + data[i].name + '</option>';
                 }
                 html += '</option>';
                     $('#preDeviceId').html(html);
@@ -124,7 +124,7 @@
 					<div class="col-3">
 						 <select id="deviceId" class="form-control form-control-line"  th:field="*{deviceId}" required
 						 onchange="javascript:findIntensitySetting(this.value)">
-								<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+								<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceIdDisplay}"/>
 						 </select> 
 
 					</div>
@@ -253,7 +253,7 @@
 											<div class="form-group">
 												    <label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label> 
 													<select id="deviceId" class="form-control form-control-line"  th:field="*{deviceId}" required>
-								                         <option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+								                         <option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceIdDisplay}"/>
 						                             </select>
 												</div>
 												

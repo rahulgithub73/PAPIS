@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dan.papis.entity.DeviceConfiguration;
 import com.dan.papis.entity.IntensitySetting;
+import com.dan.papis.entity.LEDBoard;
 import com.dan.papis.repository.IntensitySettingRepo;
 import com.dan.papis.repository.LEDBoardRepo;
 import com.dan.papis.service.DeviceConfigurationService;
@@ -85,7 +86,7 @@ public class IntensitySettingController {
 	}
 	
 	@GetMapping("/findIntensitySetting/{deviceId}")
-	public String findIntensitySetting(@PathVariable String deviceId, Model model) {
+	public String findIntensitySetting(@PathVariable Long deviceId, Model model) {
 		List<IntensitySetting> objects = new ArrayList<>();
 		List<IntensitySetting>  list = intensitySettingRepo.findByDeviceId(deviceId);
 		for (IntensitySetting dc : list) {
@@ -115,16 +116,45 @@ public class IntensitySettingController {
 	@ModelAttribute
 	public void addAttributes(Model model) {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
-		model.addAttribute("preDevices", lEDBoardRepo.findByDeviceTypeId(1));
+		model.addAttribute("preDevices", this.getBoardHardwareId());
 		
 	}
+	
+	
+	private List<LEDBoard> getBoardHardwareId() {
+		List<LEDBoard> listReturn = new ArrayList();
+		List<LEDBoard> list = lEDBoardRepo.findByDeviceTypeId(1);
+		if(list != null && list.size()>0) {
+			for(LEDBoard ob : list) {
+				ob.setBoardHardwareId(this.getBoardHardwareId(ob));
+				listReturn.add(ob);
+			}
+		}
+		return listReturn;
+		
+		
+	}
+	
+	private String getBoardHardwareId(LEDBoard dc) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(dc.getVendorCode());
+		sb.append("-");
+		sb.append(dc.getYear());
+		sb.append("-");
+		sb.append(dc.getUniqueSerialNumber());
+		return sb.toString();
+		
+	}
+	
+	
 
 	private List<IntensitySetting> getAll() {
 		List<IntensitySetting> objects = new ArrayList<>();
 		List<DeviceConfiguration> dcList = deviceConfigurationService.getAlldevices();
 		List<IntensitySetting> list = null;
 		if (dcList != null && dcList.size() > 0) {
-			String deviceTypeId = dcList.get(0).getDeviceId();
+			Long deviceTypeId = dcList.get(0).getDeviceId();
 			list = intensitySettingRepo.findByDeviceId(deviceTypeId);
 
 		} else {
@@ -146,4 +176,5 @@ public class IntensitySettingController {
 
 	}
 
+	
 }

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/assets/images/favicon.png">
+<title>Rake Composition</title>
+<!-- Custom CSS -->
+<link href="/dist/css/style.min.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css"
+	rel="stylesheet" />
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+function cancel()
+{
+	
+	window.location="/deviceConfiguration"
+    
+}
+
+function addRakeCompositionEnable()
+{
+	
+	document.getElementById("addRakeComposition").disabled = true; 
+    
+}
+
+//Invoke the corresponding URL to update the dynamic fields section using Ajax
+function fetchRk(trainNo) {
+	window.location="/fetchRakeComposition/"+trainNo
+	  /*  $.ajax({
+				url : "/fetchRakeComposition/" + trainNo,
+				success : function(response) {
+					$("#dynamicTableContents").html(response);
+					
+
+				}
+			}); */
+}
+
+function duplicateMpuIdValidation(deviceId)
+{
+	
+	/*<![CDATA[*/
+	var devices = /*[[${trainRakeComposition.rakeCompositions}]]*/ [];
+	for (var i = 0; i < devices.length; i++) {
+		if(devices[i].deviceId == deviceId){
+			alert("This MPU id already Used")
+			 
+		}
+		
+	 }
+	/*]]>*/
+
+	
+	
+    
+}
+</script>
+
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+		data-sidebartype="full" data-sidebar-position="absolute"
+		data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<div th:insert="header.html :: header"></div>
+		<!-- ============================================================== -->
+		<div th:insert="aside.html :: aside"></div>
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb">
+				<div class="row align-items-center">
+					<div class="col-5">
+						<h4 class="page-title">Rake Composition</h4>
+						<div class="d-flex align-items-center">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Rake
+										Composition</li>
+								</ol>
+							</nav>
+						</div>
+						</div>
+						<div class="col-6">
+						
+					
+						<div th:if="${errorMessage}"
+							class="alert alert-danger alert-dismissible fade show"
+							role="alert">
+							<strong>Error:</strong> <span th:text="${errorMessage}">Error</span>
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div th:if="${successMessage}"
+							class="alert alert-success alert-dismissible fade show"
+							role="alert">
+							<strong>Success:</strong> <span th:text="${successMessage}">Success</span>
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							
+						</div>
+
+						<div id="summary"></div>
+					
+						</div>
+					
+
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<form method="post" th:action="@{/saveRakeComposition}"
+					th:object="${trainRakeComposition}" name="RakeCompositionForm"
+					id="RakeCompositionForm" class="mb-3">
+					<input type="hidden" th:field="${trainRakeComposition.Id}">
+					<input type="hidden" th:field="${trainRakeComposition.trainNameEnglish}">
+					<input type="hidden" th:field="${trainRakeComposition.downTrainNo}">
+					<input type="hidden" th:field="${trainRakeComposition.downTrainName}">
+					<div class="card">
+						<div class="card-body">
+
+
+							<div class="row">
+								<div class="col-md-2" style="text-align:left;margin-top:10px">
+
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">Select
+											Train No:</label>
+									</div>
+
+								</div>
+								<div class="col-md-2" >
+
+									<div class="form-group">
+
+										<select  onchange="javascript:fetchRk(this.value)"
+											class="form-control form-control-line" th:field="*{trainNo}" >
+												<option th:each="train : ${trains}"
+													th:value="${train.trainNumber}"
+													th:utext="${train.trainNumber}" 
+													 required />
+										</select>
+
+									</div>
+
+								</div>
+							
+								<div class="col-md-3" style="margin-top:10px">
+
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">Train
+											Name:</label> <span th:text=${trainRakeComposition.trainNameEnglish}></span>
+									</div>
+
+								</div>
+								<div class="col-md-2" style="margin-top:10px">
+
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">Down Train
+											No:</label> <span th:text=${trainRakeComposition.downTrainNo}></span>
+									</div>
+
+								</div>
+								<div class="col-md-3" style="margin-top:10px">
+
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">Down Train
+											Name:</label> <span th:text=${trainRakeComposition.downTrainName}></span>
+									</div>
+
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header dynamic-update-rows">
+							Add/Edit Rake Composition
+
+							<button type="button" name="addRakeComposition" id="addRakeComposition"
+								class="btn btn-sm btn-success float-right"
+								data-dynamic-update-rows-url="/addRakeComposition">
+								<i class="fas fa-plus"></i>
+							</button>
+
+						</div>
+						<div class="card-body">
+
+							<table class="table dynamic-update-rows" style="width: 100%">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Coach Name</th>
+										<th>MPU Available</th>
+										<th style="width: 25%">MPU Id</th>
+										<th>Coach Id</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody id="dynamicTableContents">
+									<tr th:fragment="RakeCompositions"
+										th:each="RakeComposition,rowStat : ${trainRakeComposition.rakeCompositions}">
+										<td th:text="${rowStat.count}">1</td>
+										<td><input type="hidden"
+											th:field="${trainRakeComposition.rakeCompositions[__${rowStat.index}__].Id}">
+
+											<input type="text"
+											th:field="${trainRakeComposition.rakeCompositions[__${rowStat.index}__].coachName}"
+											pattern="[A-Za-z0-9_]{1,4}" required></td>
+										<td><input type="checkbox"
+											th:field="${trainRakeComposition.rakeCompositions[__${rowStat.index}__].deviceAvailable}"
+											checked data-toggle="toggle" data-onstyle="success">
+
+										</td>
+										<td><select id="deviceId" onchange="javascript:duplicateMpuIdValidation(this.value)"
+											class="form-control form-control-sm"
+											th:field="${trainRakeComposition.rakeCompositions[__${rowStat.index}__].deviceId}"
+											required>
+												<option th:each="device : ${devices}"
+													th:value="${device.deviceId}"
+													th:utext="${device.deviceIdDisplay}" 
+													  />
+										</select></td>
+										<td><input type="text"
+											th:field="${trainRakeComposition.rakeCompositions[__${rowStat.index}__].coachId}">
+										</td>
+
+										<td>
+											<div class="btn-group">
+												<button type="button" name="removeDynamicRow"
+													th:value="${rowStat.index}" class="btn btn-sm btn-danger"
+													data-dynamic-update-rows-url="/removeRakeComposition">
+													<i class="fas fa-trash"></i>
+												</button>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+
+					</div>
+					    <button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
+					    <button type="button" class="btn waves-effect waves-light btn-success">Sync</button>
+						<button type="button" class="btn waves-effect waves-light btn-danger" 
+						onclick="javascript:cancel()" >Cancel</button>
+						
+						
+					<hr />
+					<br />
+					
+				</form>
+
+
+			</div>
+			<!-- ============================================================== -->
+			<!-- End PAge Content -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Right sidebar -->
+			<!-- ============================================================== -->
+			<!-- .right-sidebar -->
+			<!-- ============================================================== -->
+			<!-- End Right sidebar -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Container fluid  -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- footer -->
+		<!-- ============================================================== -->
+		<footer class="footer text-center"> Copyright Dan electronic
+			system Pvt ltd, 2020 </footer>
+		<!-- ============================================================== -->
+		<!-- End footer -->
+		<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Page wrapper  -->
+	<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Wrapper -->
+	<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/dist/js/app-style-switcher.js"></script>
+	<!--Wave Effects -->
+	<script src="/dist/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src="/dist/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src="/dist/js/custom.js"></script>
+	<script src="/dist/js/scripts.js"></script>
+
+	<script
+		src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
+
+</body>
+
+</html>

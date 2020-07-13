@@ -63,7 +63,7 @@ public class DeviceConfigurationController {
 	}
 
 	@GetMapping("/editDeviceConfiguration/{deviceId}")
-	public String editDeviceConfiguration(@PathVariable String deviceId, Model model) {
+	public String editDeviceConfiguration(@PathVariable Long deviceId, Model model) {
 
 		Optional<DeviceConfiguration> deviceConfiguration = deviceConfigurationRepository.findById(deviceId);
 		if (deviceConfiguration.isPresent()) {
@@ -75,7 +75,7 @@ public class DeviceConfigurationController {
 	}
 
 	@GetMapping("/deleteDeviceConfiguration/{deviceId}")
-	public String deleteDeviceConfiguration(@PathVariable String deviceId, Model model) {
+	public String deleteDeviceConfiguration(@PathVariable Long deviceId, Model model) {
 
 		Optional<DeviceConfiguration> deviceConfiguration = deviceConfigurationRepository.findById(deviceId);
 		if (deviceConfiguration.isPresent()) {
@@ -87,7 +87,7 @@ public class DeviceConfigurationController {
 	}
 
 	@GetMapping("/periphralDevices/{deviceTypeId}/{deviceId}")
-	public String periphralDevices(@PathVariable String deviceTypeId,@PathVariable String deviceId, Model model) {
+	public String periphralDevices(@PathVariable String deviceTypeId,@PathVariable Long deviceId, Model model) {
 		model.addAttribute("deviceType", papisConfigConstant.getDeviceType());
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 		if (deviceTypeId.equals("1")) {
@@ -178,6 +178,15 @@ public class DeviceConfigurationController {
 			if (dc.getLastModifiedDate() != null) {
 				dc.setLastModified(PapisUtils.getFormattedDate(dc.getLastModifiedDate()));
 			}
+			StringBuilder sb = new StringBuilder();
+			sb.append(dc.getZonalCode());
+			sb.append("-");
+			sb.append(dc.getYear());
+			sb.append("-");
+			sb.append(dc.getCoachSerialNumber());
+			sb.append("-");
+			sb.append(dc.getOptionalInfo());
+			dc.setDeviceIdDisplay(sb.toString());
 
 			objects.add(dc);
 		}

@@ -2,6 +2,8 @@ package com.dan.papis.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -12,8 +14,20 @@ import lombok.Data;
 public class DeviceConfiguration extends BaseEntity {
 
 	@Id
-	@Column(name = "device_id")
-	private String deviceId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long deviceId;
+	
+	@Column(name = "zonal_code")
+	private String zonalCode;
+	
+	@Column(name = "year")
+	private String year;
+	
+	@Column(name = "coach_serial_number")
+	private String coachSerialNumber;
+	
+	@Column(name = "optional_info")
+	private String optionalInfo;
 	
 	@Column(name = "device_name")
 	private String deviceName;

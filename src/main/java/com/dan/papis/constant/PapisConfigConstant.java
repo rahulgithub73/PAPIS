@@ -11,5 +11,8 @@ public class PapisConfigConstant {
 
 	@Value("${device.type}")
 	private String deviceType;
+	
+	@Value("${file.path}")
+	private String filePath;
 
 }

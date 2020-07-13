@@ -16,22 +16,25 @@ public class LCDBoard extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "device_Id")
-	private String deviceId;
-	
+
+	@Column(name = "device_id")
+	private Long deviceId;
+
+	@Column(name = "vendor_code")
+	private String vendorCode;
+
+	@Column(name = "year")
+	private String year;
+
+	@Column(name = "unique_serial_number")
+	private String uniqueSerialNumber;
+
 	@Column(name = "device_type_id")
 	private Integer deviceTypeId;
-	
-	@Column(name = "device_type_name")
-	private String deviceTypeName;
 
-	@Column(name = "board_hardware_id")
-	private String boardHardwareId;
-	
 	@Column(name = "board_IP_address")
 	private String boardIPAddress;
 
@@ -43,10 +46,10 @@ public class LCDBoard extends BaseEntity {
 
 	@Column(name = "data_change_seconds")
 	private String dataChangeSeconds;
-	
+
 	@Column(name = "default_message")
 	private String defaultMessage;
-	
+
 	@Column(name = "effect_speed")
 	private String effectSpeed;
 
@@ -67,10 +70,16 @@ public class LCDBoard extends BaseEntity {
 
 	@Column(name = "effect_type")
 	private String effectType;
-	
+
 	@Column(name = "status")
 	private String status;
 
 	@Transient
 	private String periDeviceType;
+
+	@Transient
+	private String boardHardwareId;
+
+	@Transient
+	private String deviceTypeName;
 }

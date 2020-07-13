@@ -20,27 +20,27 @@ public class EmergencyButton extends BaseEntity {
 	private Long Id;
 
 	@Column(name = "device_id")
-	private String deviceId;
+	private Long deviceId;
 
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "device_type_id")
 	private Integer deviceTypeId;
-	
-	@Column(name = "device_type_name")
-	private String deviceTypeName;
 
 	@Column(name = "audio_file")
 	private String audioFile;
-	
+
 	@Column(name = "status")
 	private String status;
-	
+
 	@Transient
 	private String periDeviceType;
-	
+
 	@Transient
 	private MultipartFile file;
+
+	@Transient
+	private String deviceTypeName;
 
 }

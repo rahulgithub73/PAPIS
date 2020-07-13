@@ -49,7 +49,7 @@ public class PASystemController {
 	}
 
 	@GetMapping("/addPASystem/{deviceId}")
-	public String addPASystem(Model model,@PathVariable String deviceId) {
+	public String addPASystem(Model model,@PathVariable Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		PASystem paSystem = new PASystem();
 		paSystem.setDeviceId(deviceId);
@@ -96,7 +96,7 @@ public class PASystemController {
 		return "/PASystem";
 	}
 
-	private void updateModel(Model model,String deviceId) {
+	private void updateModel(Model model,Long deviceId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		PASystem paSystem = new PASystem();
 		paSystem.setPeriDeviceType("4");
@@ -110,7 +110,7 @@ public class PASystemController {
 		model.addAttribute("devices", deviceConfigurationService.getAlldevices());
 	}
 
-	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+	private List<PeriphralDevices>  getConfiguration(Long deviceId) {
         return deviceConfigurationService.getAllPeriphralDevice(deviceId);
      }
 	private List<PASystem> getConfiguration1() {

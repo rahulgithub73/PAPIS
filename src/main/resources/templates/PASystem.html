@@ -108,7 +108,7 @@ function deleteById(id,periDeviceType)
 			<div class="page-breadcrumb">
 				<div class="row align-items-center">
 					<div class="col-7">
-						<h4 class="page-title">Add peripheral device</h4>
+						<h4 class="page-title">PA system</h4>
 						<div class="d-flex align-items-center">
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
@@ -160,7 +160,7 @@ function deleteById(id,periDeviceType)
 										<tbody>
 
 											<tr th:each="dc: ${lists}">
-												<td th:text="${dc.deviceId}"></td>
+												<td th:text="${dc.deviceIdDisplay}"></td>
 												<td th:text="${dc.deviceTypeName}"></td>
 												<td th:text="${dc.name}"></td>
 												<td th:if="${dc.status} == 'Working'" th:text="${dc.status}" style="color:green;"></td>
@@ -239,7 +239,7 @@ function deleteById(id,periDeviceType)
 															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
 															 <select id="deviceId" class="form-control form-control-line" 
 															 onchange="javascript:deviceIdChanged(this.value)"  th:field="*{deviceId}" required>
-																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceIdDisplay}"/>
 															</select>
 
 														</div>

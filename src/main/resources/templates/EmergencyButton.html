@@ -77,6 +77,34 @@ function deleteById(id,periDeviceType)
 	
    
 }
+
+var _validFileExtensions = [".MP4", ".mp4"];    
+function Validate(oForm) {
+    var arrInputs = oForm.getElementsByTagName("input");
+    for (var i = 0; i < arrInputs.length; i++) {
+        var oInput = arrInputs[i];
+        if (oInput.type == "file") {
+            var sFileName = oInput.value;
+            if (sFileName.length > 0) {
+                var blnValid = false;
+                for (var j = 0; j < _validFileExtensions.length; j++) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+                
+                if (!blnValid) {
+                    alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                    return false;
+                }
+            }
+        }
+    }
+  
+    return true;
+}
 </script>
 </head>
 
@@ -109,7 +137,7 @@ function deleteById(id,periDeviceType)
 			<div class="page-breadcrumb">
 				<div class="row align-items-center">
 					<div class="col-7">
-						<h4 class="page-title">Add peripheral device</h4>
+						<h4 class="page-title">Emergency switch button</h4>
 						<div class="d-flex align-items-center">
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
@@ -161,7 +189,7 @@ function deleteById(id,periDeviceType)
 										<tbody>
 
 											<tr th:each="dc: ${lists}">
-												<td th:text="${dc.deviceId}"></td>
+												<td th:text="${dc.deviceIdDisplay}"></td>
 												<td th:text="${dc.deviceTypeName}"></td>
 												<td th:text="${dc.name}"></td>
 												<td th:if="${dc.status} == 'Working'" th:text="${dc.status}" style="color:green;"></td>
@@ -230,7 +258,8 @@ function deleteById(id,periDeviceType)
 						<div class="card">
 							<div class="card-body">
 
-								<form  th:action="@{/addEmergencyButton}" th:object="${emergencyButton}" method="post" enctype="multipart/form-data">
+								<form  th:action="@{/addEmergencyButton}" th:object="${emergencyButton}"
+								 method="post" enctype="multipart/form-data" onsubmit="return Validate(this);">
 
 									<div class="container-fluid">
 
@@ -240,7 +269,7 @@ function deleteById(id,periDeviceType)
 															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
 															 <select id="deviceId" class="form-control form-control-line" 
 															 onchange="javascript:deviceIdChanged(this.value)"  th:field="*{deviceId}" required>
-																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceIdDisplay}"/>
 															</select>
 
 														</div>
@@ -276,11 +305,14 @@ function deleteById(id,periDeviceType)
 
 											</div>
 											<div class="col-md-6">
-											   <div class="custom-file">
-                                               <!-- <input type="file" class="custom-file-input" id="customFile" name="myImage" th:field="*{audioFile}">
-										       <label class="custom-file-label" for="customFile">Choose image file...</label> -->
-										       <input type="file" name="file" th:field="*{file}"/>
-										       </div>
+											<label for="recipient-name" class="control-label">Audio file for announcement:</label>
+											<div class="form-group">
+													
+													<input type="file" name="file" th:field="*{file}" 
+													accept=".mp4,MP4|audio" />
+										             <a href="#"><span th:text="*{audioFile}"></span></a>
+												</div>
+											  
 										   </div>
 											
 										</div>

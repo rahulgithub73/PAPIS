@@ -3,6 +3,7 @@ package com.dan.papis.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -10,14 +11,13 @@ import lombok.Data;
 @Data
 public class BaseEntity {
 
-	private String createdBy;
-
 	private String lastModifiedBy;
 
-	private LocalDateTime createdDate;
-
 	private LocalDateTime lastModifiedDate;
-	
+
 	private String lastModified;
+
+	@Transient
+	private String deviceIdDisplay;
 
 }

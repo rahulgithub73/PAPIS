@@ -18,7 +18,7 @@ public class PASystem extends BaseEntity {
 	private Long Id;
 
 	@Column(name = "device_id")
-	private String deviceId;
+	private Long deviceId;
 
 	@Column(name = "name")
 	private String name;

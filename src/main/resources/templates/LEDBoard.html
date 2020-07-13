@@ -108,7 +108,7 @@ function deleteById(id,periDeviceType)
 			<div class="page-breadcrumb">
 				<div class="row align-items-center">
 					<div class="col-7">
-						<h4 class="page-title">Add peripheral device</h4>
+						<h4 class="page-title">LED dislination board/LED slave display board </h4>
 						<div class="d-flex align-items-center">
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
@@ -161,7 +161,7 @@ function deleteById(id,periDeviceType)
 										<tbody>
 
 											<tr th:each="dc: ${lists}">
-												<td th:text="${dc.deviceId}"></td>
+												<td th:text="${dc.deviceIdDisplay}"></td>
 												<td th:text="${dc.deviceTypeName}"></td>
 												<td th:text="${dc.boardIPAddress}"></td>
 												<td th:text="${dc.name}"></td>
@@ -241,7 +241,7 @@ function deleteById(id,periDeviceType)
 															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
 															 <select id="deviceId" class="form-control form-control-line" 
 															 onchange="javascript:deviceIdChanged(this.value)"  th:field="*{deviceId}" required>
-																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceIdDisplay}"/>
 															</select>
 
 														</div>
@@ -270,22 +270,70 @@ function deleteById(id,periDeviceType)
 										<div class="row">
 									      	<input type="hidden"  class="form-control" th:field="*{id}">
 											
+											<div class="col-md-6">
+                                                 <label for="recipient-name" class="control-label">Board Hardware Id:</label>
+												<div class="row">
+													<div class="col-md-3">
+
+														<div class="form-group">
+															<input type="text" class="form-control" required
+																th:field="*{vendorCode}" pattern="[A-Za-z0-9_]{1,2}" placeholder="    ---   ---   ">
+														</div>
+													</div>
+													<div class="col-md-3">
+
+														<div class="form-group">
+															<select class="form-control form-control-line" th:field="*{year}">
+																         <option th:value="2020">2020</option>
+		                                                                 <option th:value="2021">2021</option>
+																		 <option th:value="2022">2022</option>
+																		 <option th:value="2023">2023</option>
+																		 <option th:value="2024">2024</option>
+																		 <option th:value="2025">2025</option>
+																		 <option th:value="2026">2026</option>
+																		 <option th:value="2027">2027</option>
+																		 <option th:value="2028">2028</option>
+																		 <option th:value="2029">2029</option>
+																		 <option th:value="2030">2030</option>
+																		 <option th:value="2031">2031</option>
+																		 <option th:value="2032">2032</option>
+																		 <option th:value="2033">2033</option>
+																		 <option th:value="2034">2034</option>
+																		 <option th:value="2035">2035</option>
+																		 <option th:value="2036">2036</option>
+																		 <option th:value="2037">2037</option>
+																		 <option th:value="2038">2038</option>
+																		 <option th:value="2039">2039</option>
+																		 <option th:value="2040">2040</option>
+															</select>
+
+														</div>
+
+													</div>
+													<div class="col-md-4">
+
+														<div class="form-group">
+															<input type="text" class="form-control" required
+																th:field="*{uniqueSerialNumber}" pattern="[A-Za-z0-9_]{1,5}" placeholder="---   ---   ---  ---  ---">
+														</div>
+
+													</div>
+													
+													</div>
+
+											</div> 
 											
 											<div class="col-md-6">
 
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Name:</label> <input type="text" class="form-control" th:field="*{name}">
+													<label for="recipient-name" class="control-label">Name:</label>
+													 <input type="text" class="form-control" th:field="*{name}">
 												</div>
 
 											</div>
-											<div class="col-md-6">
-
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Board Hardware Id:</label> <input type="text" class="form-control" th:field="*{boardHardwareId}">
-												</div>
-
-											</div>
+											
 										</div>
+										
 										<div class="row">
 											
 											
@@ -322,7 +370,7 @@ function deleteById(id,periDeviceType)
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-4">
 
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Effect Type:</label> <select class="form-control form-control-line" th:field="*{effectType}">
@@ -335,7 +383,7 @@ function deleteById(id,periDeviceType)
 
 											</div>
 											
-											<div class="col-md-6">
+											<div class="col-md-4">
 
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Effect speed:</label> <select class="form-control form-control-line" >
@@ -350,10 +398,7 @@ function deleteById(id,periDeviceType)
 												</div>
 
 											</div>
-										</div>
-										<div class="row">
-
-											<div class="col-md-6">
+											<div class="col-md-4">
 
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Data change seconds:</label> <select class="form-control form-control-line" th:field="*{dataChangeSeconds}">
@@ -375,9 +420,8 @@ function deleteById(id,periDeviceType)
 
 											</div>
 											
-											
-
 										</div>
+										
 
 
 									</div>

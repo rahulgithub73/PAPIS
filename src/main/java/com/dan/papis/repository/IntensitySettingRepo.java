@@ -8,6 +8,6 @@ import com.dan.papis.entity.IntensitySetting;
 
 public interface IntensitySettingRepo extends JpaRepository<IntensitySetting, Long> {
 	
-	List<IntensitySetting> findByDeviceId(String deviceId);
+	List<IntensitySetting> findByDeviceId(Long deviceId);
 
 }

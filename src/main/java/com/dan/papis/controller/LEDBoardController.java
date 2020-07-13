@@ -53,7 +53,7 @@ public class LEDBoardController {
 	}
 
 	@GetMapping("/addLEDBoard/{deviceId}")
-	public String addLEDBoard(Model model, @PathVariable String deviceId) {
+	public String addLEDBoard(Model model, @PathVariable Long deviceId) {
 		LEDBoard lEDBoard = new LEDBoard();
 		lEDBoard.setDeviceId(deviceId);
 		lEDBoard.setPeriDeviceType(deviceConfigurationService.getDeviceType().get(1));
@@ -100,7 +100,7 @@ public class LEDBoardController {
 		return "/LEDBoard";
 	}
 
-	private void updateModel(Model model,String deviceId,Integer deviceTypeId) {
+	private void updateModel(Model model,Long deviceId,Integer deviceTypeId) {
 		model.addAttribute("lists", getConfiguration(deviceId));
 		LEDBoard lEDBoard = new LEDBoard();
 		lEDBoard.setDeviceId(deviceId);
@@ -116,7 +116,7 @@ public class LEDBoardController {
 	}
 
 	
-	private List<PeriphralDevices>  getConfiguration(String deviceId) {
+	private List<PeriphralDevices>  getConfiguration(Long deviceId) {
         return deviceConfigurationService.getAllPeriphralDevice(deviceId);
      }
 	
@@ -128,8 +128,8 @@ public class LEDBoardController {
 		List<IdNameVO> lists = new ArrayList<>();
 		for(LEDBoard ob : list) {
 			IdNameVO idNameVO= new IdNameVO();
-			idNameVO.setId(ob.getBoardHardwareId());
-			idNameVO.setName(ob.getName());
+			idNameVO.setId(ob.getId());
+			idNameVO.setName(this.getBoardHardwareId(ob));
 			lists.add(idNameVO);
 		}
 		return lists;
@@ -153,5 +153,17 @@ public class LEDBoardController {
 		return objects;
 
 	}
+
+	private String getBoardHardwareId(LEDBoard dc) {
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append(dc.getVendorCode());
+	sb.append("-");
+	sb.append(dc.getYear());
+	sb.append("-");
+	sb.append(dc.getUniqueSerialNumber());
+	return sb.toString();
+	
+}
 
 }

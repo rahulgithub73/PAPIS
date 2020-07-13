@@ -9,7 +9,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Favicon icon -->
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/assets/images/favicon.png">
 <title>Slogans</title>
 <!-- Custom CSS -->
 <link href="/dist/css/style.min.css" rel="stylesheet">
@@ -21,7 +22,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 	function viewUser(id) {
 		$.ajax({
 			url : "/editSlogans/" + id,
@@ -32,10 +33,54 @@
 			}
 		});
 	}
-	function findSlogans(deviceId)
-	{
-		window.location="/findSlogans/"+deviceId
-	   
+	
+	function findSlogans(deviceId) {
+		window.location = "/findSlogans/" + deviceId
+
+	}
+
+	var _validFileExtensions = [".MP3", ".mp3"];
+	function Validate(oForm) {
+		var arrInputs = oForm.getElementsByTagName("input");
+		for (var i = 0; i < arrInputs.length; i++) {
+			var oInput = arrInputs[i];
+			if (oInput.type == "file") {
+				var sFileName = oInput.value;
+				if (sFileName.length > 0) {
+					var blnValid = false;
+					for (var j = 0; j < _validFileExtensions.length; j++) {
+						var sCurExtension = _validFileExtensions[j];
+						if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+							blnValid = true;
+							break;
+						}
+					}
+
+					if (!blnValid) {
+						alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	function uploadFileShow(slogansType) {
+
+		var uploadFileLabel = document.getElementById("uploadFileLabel");
+		var uploadFile = document.getElementById("uploadFile");
+		if (slogansType == 3) {
+
+			uploadFileLabel.style.display = "block";
+			uploadFile.style.display = "block";
+		} else {
+
+			uploadFileLabel.style.display = "none";
+			uploadFile.style.display = "none";
+		}
+
 	}
 </script>
 </head>
@@ -53,11 +98,13 @@
 	<!-- ============================================================== -->
 	<!-- Main wrapper - style you can find in pages.scss -->
 	<!-- ============================================================== -->
-	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+		data-sidebartype="full" data-sidebar-position="absolute"
+		data-header-position="absolute" data-boxed-layout="full">
 		<!-- ============================================================== -->
-		<div th:insert="header.html :: header"> </div>
+		<div th:insert="header.html :: header"></div>
 		<!-- ============================================================== -->
-        <div th:insert="aside.html :: aside"> </div>
+		<div th:insert="aside.html :: aside"></div>
 		<!-- ============================================================== -->
 		<!-- Page wrapper  -->
 		<!-- ============================================================== -->
@@ -78,22 +125,29 @@
 							</nav>
 						</div>
 					</div>
-					<div class="col-2" style="text-align:right;margin-top:15px">
-					
-					<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
-						
+					<div class="col-2" style="text-align: right; margin-top: 15px">
+
+						<label for="recipient-name" class="control-label">Select <span
+							th:text="${deviceType}"></span> Device id:
+						</label>
+
 
 					</div>
 					<div class="col-3">
-						 <select id="deviceId" class="form-control form-control-line"  th:field="*{deviceId}" required
-						 onchange="javascript:findSlogans(this.value)">
-								<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
-						 </select> 
+						<select id="deviceId" class="form-control form-control-line"
+							th:field="*{deviceId}" required
+							onchange="javascript:findSlogans(this.value)">
+							<option th:each="device : ${devices}"
+								th:value="${device.deviceId}"
+								th:utext="${device.deviceIdDisplay}" />
+						</select>
 
 					</div>
 					<div class="col-2">
 						<div class="text-right upgrade-btn">
-							<a data-toggle="modal" data-target="#responsive-modal" class="btn waves-effect waves-light btn-rounded btn-success text-white"><i class="fa fa-plus"></i>Add Slogans</a>
+							<a data-toggle="modal" data-target="#responsive-modal"
+								class="btn waves-effect waves-light btn-rounded btn-success text-white"><i
+								class="fa fa-plus"></i>Add Slogans</a>
 						</div>
 					</div>
 				</div>
@@ -116,8 +170,7 @@
 								<table class="table">
 									<thead class="thead-light">
 										<tr>
-										    <th scope="col"><span th:text="${deviceType}"></span> Device Id</th>
-										    <th scope="col">Device Type Name</th>
+											<th scope="col">Device Type Name</th>
 											<th scope="col">Slogans Type</th>
 											<th scope="col">Language</th>
 											<th scope="col">Message</th>
@@ -127,25 +180,31 @@
 										</tr>
 									</thead>
 									<tbody>
-                                           
-										    <tr th:each="dc: ${sloganss}">
-										    <td th:text="${dc.deviceId}"></td>
-										    <td th:text="${dc.deviceTypeName}"></td>
+
+										<tr th:each="dc: ${sloganss}">
+											<td th:text="${dc.deviceTypeName}"></td>
 											<td th:text="${dc.messageType}"></td>
 											<td th:text="${dc.language}"></td>
 											<td th:text="${dc.message}"></td>
-											
+
 
 											<td>
 												<ul class="list-inline m-0">
 
 
-													<li class="list-inline-item"><a th:attr="onclick=|viewUser('${dc.id}')|">
-															<button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+													<li class="list-inline-item"><a
+														th:attr="onclick=|viewUser('${dc.id}')|">
+															<button class="btn btn-success btn-sm rounded-0"
+																type="button" data-toggle="tooltip" data-placement="top"
+																title="Edit">
 																<i class="fa fa-edit"></i>
 															</button>
 													</a></li>
-													<li class="list-inline-item"><a data-toggle="modal" th:attr="data-target='#delete-modal'+${dc.id}"><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete">
+													<li class="list-inline-item"><a data-toggle="modal"
+														th:attr="data-target='#delete-modal'+${dc.id}"><button
+																class="btn btn-danger btn-sm rounded-0" type="button"
+																data-toggle="tooltip" data-placement="top"
+																title="Delete">
 																<i class="fa fa-trash"></i>
 															</button></a></li>
 												</ul>
@@ -153,17 +212,25 @@
 												<div class="col-12">
 
 													<!-- sample modal content -->
-													<div id="delete-modal" class="modal bs-example-modal-sm" th:id="delete-modal+${dc.id }" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+													<div id="delete-modal" class="modal bs-example-modal-sm"
+														th:id="delete-modal+${dc.id }" tabindex="-1" role="dialog"
+														aria-labelledby="mySmallModalLabel" aria-hidden="true"
+														style="display: none;">
 														<div class="modal-dialog modal-sm">
 															<div class="modal-content">
 																<div class="modal-header">
-																	<h4 class="modal-title" id="mySmallModalLabel">Delete User</h4>
-																	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																	<h4 class="modal-title" id="mySmallModalLabel">Delete
+																		User</h4>
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-hidden="true">×</button>
 																</div>
-																<div class="modal-body">Are you sure you want to delete the Slogans ?</div>
+																<div class="modal-body">Are you sure you want to
+																	delete the Slogans ?</div>
 																<div class="modal-footer">
-																	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-																	<a th:href="${'/deleteSlogans/'+dc.id}"><button class="btn btn-danger">Yes</button></a>
+																	<button class="btn" data-dismiss="modal"
+																		aria-hidden="true">Cancel</button>
+																	<a th:href="${'/deleteSlogans/'+dc.id}"><button
+																			class="btn btn-danger">Yes</button></a>
 																</div>
 															</div>
 															<!-- /.modal-content -->
@@ -179,7 +246,8 @@
 									</tbody>
 								</table>
 								<div class="col-12" style="text-align: center;">
-									<span th:if="${#lists.isEmpty(sloganss)}">Record not found</span>
+									<span th:if="${#lists.isEmpty(sloganss)}">Record not
+										found</span>
 								</div>
 							</div>
 						</div>
@@ -189,14 +257,21 @@
 
 					<div class="col-12">
 						<!-- sample modal content -->
-						<div id="responsive-modal" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" th:fragment="responsiveDeviceModal">
+						<div id="responsive-modal" class="modal bs-example-modal-lg"
+							tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+							aria-hidden="true" style="display: none;"
+							th:fragment="responsiveDeviceModal">
 							<div class="modal-dialog modal-lg">
 								<div class="modal-content">
-									<form action="#" th:action="@{/addSlogans}" th:object="${slogans}" method="post">
+									<form action="#" th:action="@{/addSlogans}"
+										th:object="${slogans}" method="post"
+										enctype="multipart/form-data"
+										onsubmit="return Validate(this);">
 
 										<div class="modal-header">
 											<h4 class="modal-title">Add/Edit Slogans</h4>
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-hidden="true">×</button>
 
 										</div>
 										<div class="modal-body">
@@ -207,37 +282,47 @@
 													<div class="col-md-4">
 
 
-                                                         <div class="form-group" >
-															<label for="recipient-name" class="control-label">Select <span th:text="${deviceType}"></span> Device id:</label>
-															 <select id="deviceId" class="form-control form-control-line"   th:field="*{deviceId}" required>
-																<option  th:each="device : ${devices}" th:value="${device.deviceId}" th:utext="${device.deviceId}"/>
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">Select
+																<span th:text="${deviceType}"></span> Device id:
+															</label> <select id="deviceId"
+																class="form-control form-control-line"
+																th:field="*{deviceId}" required>
+																<option th:each="device : ${devices}"
+																	th:value="${device.deviceId}"
+																	th:utext="${device.deviceIdDisplay}" />
 															</select>
 
 														</div>
-														
+
 
 													</div>
 													<div class="col-md-4">
-											           <div class="form-group">
-												    <label for="recipient-name" class="control-label">Device type:</label> 
-													<select id="periDeviceType" class="form-control form-control-line"
-													 onchange="javascript:findList(this.value)"  th:field="*{deviceTypeId}">
-														
-														<option th:value="1" >LED dislination board</option>
-														<option th:value="2">LED slave display board</option>
-														<option th:value="3">LCD slave display board</option>
-														
-													</select>
+														<div class="form-group">
+															<label for="recipient-name" class="control-label">Device
+																type:</label> <select id="periDeviceType"
+																class="form-control form-control-line"
+																onchange="javascript:findList(this.value)"
+																th:field="*{deviceTypeId}">
 
-											      	</div>
-												
-											      </div>
-													
-													
+																<option th:value="1">LED dislination board</option>
+																<option th:value="2">LED slave display board</option>
+																<option th:value="3">LCD slave display board</option>
+
+															</select>
+
+														</div>
+
+													</div>
+
+
 													<div class="col-md-4">
 
 														<div class="form-group">
-															<label for="recipient-name" class="control-label">Slogans Type:</label> <select class="form-control form-control-line" th:field="*{messageTypeId}">
+															<label for="recipient-name" class="control-label">Slogans
+																Type:</label> <select class="form-control form-control-line"
+																th:field="*{messageTypeId}" id="slogansType"
+																onchange="javascript:uploadFileShow(this.value)">
 																<option th:value="1">Welcome message</option>
 																<option th:value="2">Farewell message</option>
 																<option th:value="3">Slogans</option>
@@ -249,10 +334,12 @@
 													</div>
 												</div>
 												<div class="row">
-												<div class="col-md-5">
+													<div class="col-md-3">
 
 														<div class="form-group">
-															<label for="recipient-name" class="control-label">Language:</label> <select class="form-control form-control-line" th:field="*{language}">
+															<label for="recipient-name" class="control-label">Language:</label>
+															<select class="form-control form-control-line"
+																th:field="*{language}">
 																<option th:value="Hindi">Hindi</option>
 																<option th:value="English">English</option>
 																<option th:value="Punjabi">Punjabi</option>
@@ -264,13 +351,27 @@
 														</div>
 
 													</div>
-													<div class="col-md-1"></div>
+
 													<div class="col-md-5">
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Message:</label>
-															<textarea rows="3" class="form-control form-control-line" th:field="*{message}" required></textarea>
+															<textarea rows="1" class="form-control form-control-line"
+																th:field="*{message}" required></textarea>
 
+														</div>
+
+													</div>
+													<div class="col-md-4" 
+													>
+														<label for="recipient-name" class="control-label" id="uploadFileLabel" 
+														th:style="${slogans.messageTypeId == 3 ? 'display: block' : 'display: none'}">Audio
+															file upload:</label>
+														<div class="form-group" id="uploadFile" th:style="${slogans.messageTypeId == 3 ? 'display: block' : 'display: none'}">
+
+															<input type="file" name="file" th:field="*{file}"
+																accept=".mp3,MP3|audio" /> <a href="#"><span
+																th:text="*{audioFile}"></span></a>
 														</div>
 
 													</div>
@@ -279,16 +380,17 @@
 
 
 
+
 											</div>
+											<div class="modal-footer">
 
-
-										</div>
-										<div class="modal-footer">
-
-											<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
-											<button type="submit" class="btn waves-effect waves-light btn-success" onclick="return Validate()">Save</button>
-										</div>
-
+												<button type="button"
+													class="btn waves-effect waves-light btn-danger"
+													data-dismiss="modal">Close</button>
+												<button type="submit"
+													class="btn waves-effect waves-light btn-success"
+													onclick="return Validate()">Save</button>
+											</div>
 									</form>
 								</div>
 
@@ -298,31 +400,33 @@
 					</div>
 
 				</div>
-				<!-- ============================================================== -->
-				<!-- End PAge Content -->
-				<!-- ============================================================== -->
-				<!-- ============================================================== -->
-				<!-- Right sidebar -->
-				<!-- ============================================================== -->
-				<!-- .right-sidebar -->
-				<!-- ============================================================== -->
-				<!-- End Right sidebar -->
-				<!-- ============================================================== -->
 			</div>
 			<!-- ============================================================== -->
-			<!-- End Container fluid  -->
+			<!-- End PAge Content -->
 			<!-- ============================================================== -->
 			<!-- ============================================================== -->
-			<!-- footer -->
+			<!-- Right sidebar -->
 			<!-- ============================================================== -->
-			<footer class="footer text-center"> Copyright Dan electronic system Pvt ltd, 2020 </footer>
+			<!-- .right-sidebar -->
 			<!-- ============================================================== -->
-			<!-- End footer -->
+			<!-- End Right sidebar -->
 			<!-- ============================================================== -->
 		</div>
 		<!-- ============================================================== -->
-		<!-- End Page wrapper  -->
+		<!-- End Container fluid  -->
 		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- footer -->
+		<!-- ============================================================== -->
+		<footer class="footer text-center"> Copyright Dan electronic
+			system Pvt ltd, 2020 </footer>
+		<!-- ============================================================== -->
+		<!-- End footer -->
+		<!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Page wrapper  -->
+	<!-- ============================================================== -->
 	</div>
 	<!-- ============================================================== -->
 	<!-- End Wrapper -->

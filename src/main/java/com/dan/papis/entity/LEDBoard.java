@@ -20,8 +20,17 @@ public class LEDBoard extends BaseEntity {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "device_Id")
-	private String deviceId;
+	@Column(name = "device_id")
+	private Long deviceId;
+	
+	@Column(name = "vendor_code")
+	private String vendorCode;
+	
+	@Column(name = "year")
+	private String year;
+	
+	@Column(name = "unique_serial_number")
+	private String uniqueSerialNumber;
 	
 	@Column(name = "status")
 	private String status;
@@ -31,9 +40,6 @@ public class LEDBoard extends BaseEntity {
 	
 	@Column(name = "device_type_name")
 	private String deviceTypeName;
-
-	@Column(name = "board_hardware_id")
-	private String boardHardwareId;
 
 	@Column(name = "board_IP_address")
 	private String boardIPAddress;
@@ -55,6 +61,9 @@ public class LEDBoard extends BaseEntity {
 	
 	@Transient
 	private String periDeviceType;
+	
+	@Transient
+	private String boardHardwareId;
 	
 
 }

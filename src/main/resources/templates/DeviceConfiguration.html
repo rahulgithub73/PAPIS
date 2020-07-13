@@ -110,31 +110,29 @@
 								<table class="table">
 									<thead class="thead-light">
 										<tr>
-											<th scope="col">Device Id</th>
-											<th scope="col">Device Name</th>
+											<th scope="col" style="width: 20%">Device Id</th>
 											<th scope="col">Zonal Railway</th>
 											<th scope="col">Train No</th>
 											<th scope="col">Km Run</th>
 											<th scope="col">Coach No</th>
 											<th scope="col">Coach Name</th>
-											<th scope="col">Last Updated</th>
 											<th scope="col">Status</th>
-											<th scope="col">Action</th>
+											<th scope="col">Last Updated</th>
+											<th scope="col" style="width: 15%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
 
 										<tr th:each="dc: ${deviceConfigurations}">
-											<td th:text="${dc.deviceId}"></td>
-											<td th:text="${dc.deviceName}"></td>
+											<td th:text="${dc.deviceIdDisplay}"></td>
 											<td th:text="${dc.zonalRailwayDisplay}"></td>
 											<td th:text="${dc.trainNo}"></td>
 											<td th:text="${dc.kmRun}"></td>
 											<td th:text="${dc.coachNo}"></td>
 											<td th:text="${dc.coachName}"></td>
-											<td th:text="${dc.lastModified}"></td>
 											<td th:if="${dc.status} == 'Working'" th:text="${dc.status}" style="color:green;"></td>
 											<td th:if="${dc.status} == 'Not Working'" th:text="${dc.status}" style="color:red;"></td>
+											<td th:text="${dc.lastModified}"></td>
 											<td>
 												<ul class="list-inline m-0">
 													<li class="list-inline-item"><a
@@ -179,7 +177,7 @@
 																</div>
 																<div class="modal-body">
 																	Are you sure you want to delete the device
-																	configuration: <span th:text=${dc.deviceName}></span> ?
+																	configuration: <span th:text=${dc.deviceIdDisplay}></span> ?
 
 																</div>
 																<div class="modal-footer">
@@ -231,18 +229,86 @@
 
 										</div>
 										<div class="modal-body">
-
+                                            <input type="hidden"  class="form-control" th:field="*{deviceId}">
 											<div class="container-fluid">
+											<label for="recipient-name" class="control-label">Device Id:</label>
 												<div class="row">
-													<div class="col-md-4">
+													<div class="col-md-2">
 
 														<div class="form-group">
-															<label for="recipient-name" class="control-label">Device
-																Id:</label> <input type="text" class="form-control" required
-																th:field="*{deviceId}">
+															
+																<select class="form-control form-control-line" th:field="*{zonalCode}">
+																         <option th:value="CR">CR</option>
+		                                                                 <option th:value="NR">NR</option>
+																		 <option th:value="NER">NER</option>
+																		 <option th:value="NFR">NFR</option>
+																		 <option th:value="ER">ER</option>
+																		 <option th:value="SER">SER</option>
+																		 <option th:value="SCR">SCR</option>
+																		 <option th:value="SR">SR</option>
+																		 <option th:value="WR">WR</option>
+																		 <option th:value="SWR">SWR</option>
+																		 <option th:value="NWR">NWR</option>
+																		 <option th:value="WCR">WCR</option>
+																		 <option th:value="NCR">NCR</option>
+																		 <option th:value="SECR">SECR</option>
+																		 <option th:value="ECoR">ECoR</option>
+																		 <option th:value="ECR">ECR</option>
+																		 <option th:value="MTP">MTP</option>
+																		 <option th:value="SCoR">SCoR</option>
+															</select>
+
 														</div>
 
 													</div>
+													<div class="col-md-2">
+
+														<div class="form-group">
+															<select class="form-control form-control-line" th:field="*{year}">
+																         <option th:value="2020">2020</option>
+		                                                                 <option th:value="2021">2021</option>
+																		 <option th:value="2022">2022</option>
+																		 <option th:value="2023">2023</option>
+																		 <option th:value="2024">2024</option>
+																		 <option th:value="2025">2025</option>
+																		 <option th:value="2026">2026</option>
+																		 <option th:value="2027">2027</option>
+																		 <option th:value="2028">2028</option>
+																		 <option th:value="2029">2029</option>
+																		 <option th:value="2030">2030</option>
+																		 <option th:value="2031">2031</option>
+																		 <option th:value="2032">2032</option>
+																		 <option th:value="2033">2033</option>
+																		 <option th:value="2034">2034</option>
+																		 <option th:value="2035">2035</option>
+																		 <option th:value="2036">2036</option>
+																		 <option th:value="2037">2037</option>
+																		 <option th:value="2038">2038</option>
+																		 <option th:value="2039">2039</option>
+																		 <option th:value="2040">2040</option>
+															</select>
+
+														</div>
+
+													</div>
+													<div class="col-md-2">
+
+														<div class="form-group">
+															<input type="text" class="form-control" required
+																th:field="*{coachSerialNumber}" pattern="[A-Za-z0-9_]{1,5}" placeholder="---   ---   ---">
+														</div>
+
+													</div>
+													<div class="col-md-2">
+
+														<div class="form-group">
+															 <input type="text" class="form-control" required
+																th:field="*{optionalInfo}" pattern="[A-Za-z0-9_]{1,5}" placeholder="---   ---   ---">
+														</div>
+
+													</div>
+													</div>
+													<div class="row">
 
 													<div class="col-md-4">
 
@@ -259,7 +325,8 @@
 														
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Zonal
-																Railway:</label> <select class="form-control form-control-line" th:field="*{zonalRailway}">
+																Railway:</label> 
+																     <select class="form-control form-control-line" th:field="*{zonalRailway}">
 																         <option th:value="CR">Central Railway</option>
 		                                                                 <option th:value="NR">Northern Railway</option>
 																		 <option th:value="NER">North Eastern Railway</option>
@@ -283,12 +350,7 @@
 														</div>
 
 													</div>
-
-													
-												</div>
-												<div class="row">
-												
-												      <div class="col-md-4">
+													 <div class="col-md-4">
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Train
@@ -297,6 +359,12 @@
 														</div>
 
 													</div>
+
+													
+												</div>
+												<div class="row">
+												
+												     
 													<div class="col-md-4">
 
 														<div class="form-group">
@@ -317,12 +385,7 @@
 
 													</div>
 
-													
-
-
-												</div>
-												<div class="row">
-												<div class="col-md-4">
+													<div class="col-md-4">
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">KM
@@ -331,8 +394,10 @@
 														</div>
 
 													</div>
-												</div>
 
+
+												</div>
+												
 
 											</div>
 

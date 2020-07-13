@@ -9,26 +9,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dan.papis.constant.PapisConfigConstant;
+import com.dan.papis.utils.PapisUtils;
+
 @Service
 public class FileSystemStorageService {
-	
-	private String location = "E://workspace/DAN/files/PAPIS/";
-	private final Path rootLocation;
 
 	@Autowired
-	public FileSystemStorageService() {
-		this.rootLocation = Paths.get(location);
-	}
-	
-	public void store(MultipartFile file) {
+	PapisConfigConstant papisConfigConstant;
+
+	public String store(MultipartFile file) {
 		try {
 			if (!file.isEmpty()) {
-				Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+				Path rootLocation = Paths.get(papisConfigConstant.getFilePath());
+				String fileName = file.getOriginalFilename();
+				fileName = PapisUtils.getRandomInteger(100, 1)+"_"+fileName;
+				Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
+				return fileName;
 			}
-			
+
 		} catch (IOException e) {
-			
+
 		}
+		return null;
 	}
 
 }

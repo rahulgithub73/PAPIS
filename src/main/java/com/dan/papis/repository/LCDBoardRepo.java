@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.dan.papis.entity.LCDBoard;
 
 public interface LCDBoardRepo extends JpaRepository<LCDBoard, Long> {
-	List<LCDBoard> findByDeviceId(String deviceId);
+	List<LCDBoard> findByDeviceId(Long deviceId);
 	List<LCDBoard> findByDeviceTypeId(Integer deviceTypeId);
 
 }
