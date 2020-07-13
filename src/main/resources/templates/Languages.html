@@ -33,6 +33,16 @@
 			}
 		});
 	}
+	function getTrain(trainNo) {
+		$.ajax({
+			url : "/getTrain/" + trainNo,
+			success : function(response) {
+				
+				$("#train_number").html(response);
+				
+			}
+		});
+	}
 </script>
 </head>
 
@@ -109,7 +119,7 @@
 											<th scope="col">Language2</th>
 											<th scope="col">Language3</th>
 											<th scope="col">Language4</th>
-											<th scope="col">Last login time</th>
+											
 											<th scope="col">Actions</th>
 
 
@@ -124,7 +134,7 @@
 											<td th:text="${dc.language2}"></td>
 											<td th:text="${dc.language3}"></td>
 											<td th:text="${dc.language4}"></td>
-											<td th:text="${dc.lastModifiedDate}"></td>
+											
 
 											<td>
 												<ul class="list-inline m-0">
@@ -167,7 +177,7 @@
 																<div class="modal-footer">
 																	<button class="btn" data-dismiss="modal"
 																		aria-hidden="true">Cancel</button>
-																	<a th:href="${'/deleteSlogans/'+dc.id}"><button
+																	<a th:href="${'/deleteLanguages/'+dc.id}"><button
 																			class="btn btn-danger">Yes</button></a>
 																</div>
 															</div>
@@ -218,12 +228,12 @@
 
 														<div class="form-group">
 															<label for="recipient-name" class="control-label">Train
-																No:</label> <select onchange="javascript:fetchRk(this.value)"
+																No:</label> <select 
 																class="form-control form-control-line"
-																th:field="*{trainNo}">
+																th:field="*{trainNo}" onchange="javascript:getTrain(this.value)" required>
 																<option th:each="train : ${trains}"
 																	th:value="${train.trainNumber}"
-																	th:utext="${train.trainNumber}" required />
+																	th:utext="${train.trainNumber +'('+ train.trainNameEnglish} +')' "  />
 															</select>
 
 														</div>
@@ -232,11 +242,12 @@
 													<div class="col-md-1"></div>
 													<div class="col-md-5">
 
-														<div class="form-group">
+														<!-- <div class="form-group" style="margin-top:25px">
 															<label for="recipient-name" class="control-label">Train
-																Name:</label> <span th:text=*{trainNameEnglish}></span>
+																Name:</label> <span id="train_number"></span>
+																<span th:text=${languages.trainNameEnglish}></span>
 
-														</div>
+														</div> -->
 
 													</div>
 												</div>

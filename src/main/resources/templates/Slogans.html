@@ -108,7 +108,13 @@
 		<!-- ============================================================== -->
 		<!-- Page wrapper  -->
 		<!-- ============================================================== -->
+		<form action="#" th:action="@{/addSlogans}"
+										th:object="${slogans}" method="post"
+										enctype="multipart/form-data"
+										onsubmit="return Validate(this);">
+		
 		<div class="page-wrapper">
+		     		
 			<!-- ============================================================== -->
 			<!-- Bread crumb and right sidebar toggle -->
 			<!-- ============================================================== -->
@@ -134,7 +140,7 @@
 
 					</div>
 					<div class="col-3">
-						<select id="deviceId" class="form-control form-control-line"
+						<select id="device_id" class="form-control form-control-line"
 							th:field="*{deviceId}" required
 							onchange="javascript:findSlogans(this.value)">
 							<option th:each="device : ${devices}"
@@ -263,10 +269,7 @@
 							th:fragment="responsiveDeviceModal">
 							<div class="modal-dialog modal-lg">
 								<div class="modal-content">
-									<form action="#" th:action="@{/addSlogans}"
-										th:object="${slogans}" method="post"
-										enctype="multipart/form-data"
-										onsubmit="return Validate(this);">
+									
 
 										<div class="modal-header">
 											<h4 class="modal-title">Add/Edit Slogans</h4>
@@ -391,7 +394,7 @@
 													class="btn waves-effect waves-light btn-success"
 													onclick="return Validate()">Save</button>
 											</div>
-									</form>
+									
 								</div>
 
 							</div>
@@ -423,7 +426,9 @@
 		<!-- ============================================================== -->
 		<!-- End footer -->
 		<!-- ============================================================== -->
+		
 	</div>
+	<form>
 	<!-- ============================================================== -->
 	<!-- End Page wrapper  -->
 	<!-- ============================================================== -->

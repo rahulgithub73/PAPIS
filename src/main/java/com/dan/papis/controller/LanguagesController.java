@@ -1,5 +1,7 @@
 package com.dan.papis.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dan.papis.entity.Languages;
+import com.dan.papis.entity.TrainMaster;
 import com.dan.papis.repository.LanguagesRepo;
 import com.dan.papis.service.DeviceConfigurationService;
 
@@ -25,14 +31,22 @@ public class LanguagesController {
 
 	@GetMapping("/languages")
 	public String languages(Model model) {
-		model.addAttribute("languagess", languagesRepo.findAll());
-		model.addAttribute("languages", new Languages());
+		model.addAttribute("languagess", this.getLanguages());
+		Languages lang = new Languages();
+		List<TrainMaster> list= deviceConfigurationService.getTrains() ;
+		if(list != null && list.size()> 0) {
+			lang.setTrainNo(list.get(0).getTrainNumber());
+			lang.setTrainNameEnglish(list.get(0).getTrainNameEnglish());
+		}
+		model.addAttribute("languages", lang);
 		return "/Languages";
 	}
 
 	@GetMapping("/addLanguages")
 	public String addLanguages(Model model) {
+		
 		model.addAttribute("languages", new Languages());
+		
 		return "/AddLanguages";
 	}
 
@@ -48,11 +62,14 @@ public class LanguagesController {
 
 		Optional<Languages> languages = languagesRepo.findById(id);
 		if (languages.isPresent()) {
-			model.addAttribute("languages", languages.get());
+			Languages lang = languages.get();
+			lang.setTrainNameEnglish(
+					deviceConfigurationService.getTrainByNumber(lang.getTrainNo()).getTrainNameEnglish());
+			model.addAttribute("languages", lang);
 		}
-		model.addAttribute("languagess", languagesRepo.findAll());
+		model.addAttribute("languagess", this.getLanguages());
 
-		return "/Languages";
+		return "/Languages :: responsiveDeviceModal";
 	}
 
 	@GetMapping("/deleteLanguages/{id}")
@@ -68,7 +85,7 @@ public class LanguagesController {
 	}
 
 	private void updateModel(Model model) {
-		model.addAttribute("languagess", languagesRepo.findAll());
+		model.addAttribute("languagess", this.getLanguages());
 		model.addAttribute("languages", new Languages());
 	}
 
@@ -76,6 +93,27 @@ public class LanguagesController {
 	public void addAttributes(Model model) {
 		model.addAttribute("trains", deviceConfigurationService.getTrains());
 
+	}
+
+	@RequestMapping(value = "/getTrain/{trainNo}", method = RequestMethod.GET)
+	public @ResponseBody String getTrain(@PathVariable Long trainNo) {
+		return deviceConfigurationService.getTrainByNumber(trainNo).getTrainNameEnglish();
+
+	}
+
+	private List<Languages> getLanguages() {
+		List<Languages> list = languagesRepo.findAll();
+		if (list.isEmpty()) {
+			return list;
+		}
+		List<Languages> listNew = new ArrayList<>();
+
+		for (Languages languages : list) {
+			languages.setTrainNameEnglish(
+					deviceConfigurationService.getTrainByNumber(languages.getTrainNo()).getTrainNameEnglish());
+			listNew.add(languages);
+		}
+		return listNew;
 	}
 
 }

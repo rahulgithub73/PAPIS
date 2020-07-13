@@ -98,7 +98,10 @@
 		<!-- ============================================================== -->
 		<!-- Page wrapper  -->
 		<!-- ============================================================== -->
+		 <form action="#" th:action="@{/addIntensitySetting}" th:object="${intensitySetting}" method="post">
 		<div class="page-wrapper">
+		   
+		    
 			<!-- ============================================================== -->
 			<!-- Bread crumb and right sidebar toggle -->
 			<!-- ============================================================== -->
@@ -236,8 +239,7 @@
 						        aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" th:fragment="responsiveDeviceModal">
 							<div class="modal-dialog modal-lg">
 								<div class="modal-content">
-									<form action="#" th:action="@{/addIntensitySetting}" th:object="${intensitySetting}" method="post">
-
+									
 										<div class="modal-header">
 											<h4 class="modal-title">Add/Edit Intensity Setting</h4>
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -366,7 +368,7 @@
 											<button type="button" class="btn waves-effect waves-light btn-danger" data-dismiss="modal">Close</button>
 											<button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
 										</div>
-									</form>
+									
 								</div>
 
 							</div>
@@ -395,7 +397,9 @@
 			<!-- ============================================================== -->
 			<!-- End footer -->
 			<!-- ============================================================== -->
+			
 		</div>
+		</form>
 		<!-- ============================================================== -->
 		<!-- End Page wrapper  -->
 		<!-- ============================================================== -->

@@ -185,11 +185,11 @@ function duplicateMpuIdValidation(deviceId)
 									<div class="form-group">
 
 										<select  onchange="javascript:fetchRk(this.value)"
-											class="form-control form-control-line" th:field="*{trainNo}" >
+											class="form-control form-control-line" th:field="*{trainNo}" required>
 												<option th:each="train : ${trains}"
 													th:value="${train.trainNumber}"
 													th:utext="${train.trainNumber}" 
-													 required />
+													  />
 										</select>
 
 									</div>
